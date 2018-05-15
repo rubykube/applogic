@@ -44,7 +44,7 @@ script:
    docker build --tag $CONTAINER_REGISTRY/applogic:latest --cache-from $CONTAINER_REGISTRY/applogic:latest .
 
 # Execute all of the commands which need to be executed after the build passed.
-after_success: env # && ruby ci/bump.rb
+after_success: env
 
 # Execute all of the commands which need to be executed after the build failed.
 after_failure:
