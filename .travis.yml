@@ -40,8 +40,9 @@ before_script:
 
 # Execute all of the commands which should make the build pass or fail.
 script:
-  - bundle exec rspec &&
-   docker build --tag $CONTAINER_REGISTRY/applogic:latest --cache-from $CONTAINER_REGISTRY/applogic:latest .
+  - bundle exec rspec
+  - bundle exec rubocop
+  - docker build --tag $CONTAINER_REGISTRY/applogic:latest --cache-from $CONTAINER_REGISTRY/applogic:latest .
 
 # Execute all of the commands which need to be executed after the build passed.
 after_success: env
