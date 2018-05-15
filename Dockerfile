@@ -28,7 +28,8 @@ COPY --chown=app . $APP_HOME
 
 USER app
 
-RUN ./bin/init_config
+RUN ./bin/init_config \
+ && bundle exec rake tmp:create yarn:install assets:precompile
 
 EXPOSE 8080
 
