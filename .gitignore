@@ -11,11 +11,15 @@
 /log/*
 /tmp/*
 
+# Ignore all config files
+/config/application.yml
+
 # Ignore uploaded files in development
 /storage/*
 
 /node_modules
 /yarn-error.log
+/.idea
 
 /public/assets
 .byebug_history
