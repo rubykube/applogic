@@ -1,0 +1,44 @@
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'vendor/**/*'
+    - 'bin/*'
+# Exclude specs from BlockLength as describe specs can often be longer
+# Exclude configs from BlockLength
+# Exclude db migrations from MethodLength & BlockLength as they may be longer
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'config/**/*.rb'
+    - 'db/migrate/*.rb'
+    - 'lib/tasks/*.rake'
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/*.rb'
+    - 'app/builders/transaction_csv_builder.rb'
+Metrics/AbcSize:
+  Severity: refactor
+  Max: 15
+Metrics/ClassLength:
+  Severity: refactor
+Metrics/PerceivedComplexity:
+  Severity: refactor
+# Don't require a documentation comment in top-level classes
+Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 100
+  Exclude:
+    - 'features/support/env.rb'
+    - 'lib/tasks/cucumber.rake'
+    - 'script/cucumber'
+Style/NumericLiterals:
+  Exclude:
+    - 'spec/factories/**/*.rb'
+Style/ConditionalAssignment:
+  Enabled: false
+Style/NumericLiterals:
+  Enabled: false
+
