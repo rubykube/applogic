@@ -15,6 +15,7 @@ env:
     BOT_USERNAME=kite-bot
     BOT_NAME="Kite Bot"
     BOT_EMAIL=kite-bot@heliostech.fr
+    DOCKERHUB_USER=syaroslav
 
 services:
   - mysql
