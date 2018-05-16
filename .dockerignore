@@ -22,3 +22,6 @@ ci
 docs
 tmp
 log
+
+.bundle
+vendor
