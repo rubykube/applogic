@@ -15,7 +15,6 @@ env:
     BOT_USERNAME=kite-bot
     BOT_NAME="Kite Bot"
     BOT_EMAIL=kite-bot@heliostech.fr
-    CONTAINER_REGISTRY=syaroslav
 
 services:
   - mysql
@@ -28,7 +27,9 @@ before_install:
   - nvm install 8
   - nvm use 8
   - npm i -g yarn
-  - docker pull $CONTAINER_REGISTRY/applogic:latest || true
+  - docker pull $DOCKERHUB_USER/applogic:latest || true
+  - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD || true # Don't let the build fail in case of broken authentication in Docker Hub.
+
 
 # Execute all of the commands which should install application dependencies.
 install:
@@ -42,10 +43,10 @@ before_script:
 script:
   - bundle exec rspec
   - bundle exec rubocop
-  - docker build --tag $CONTAINER_REGISTRY/applogic:latest --cache-from $CONTAINER_REGISTRY/applogic:latest .
+  - docker build --tag $DOCKERHUB_USER/applogic:latest --cache-from $DOCKERHUB_USER/applogic:latest .
 
 # Execute all of the commands which need to be executed after the build passed.
-after_success: env
+after_success: docker push $DOCKERHUB_USER/applogic:latest || true
 
 # Execute all of the commands which need to be executed after the build failed.
 after_failure:
