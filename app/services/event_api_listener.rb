@@ -17,8 +17,12 @@ class EventAPIListener
 
   private
 
-  def get_env(suffix)
+  def event_api_jwt_env(suffix)
     ENV["#{@application.upcase}_EVENT_API_JWT_#{suffix}"]
+  end
+
+  def event_api_jwt_env_to_int(suffix)
+    event_api_jwt_env(suffix).to_s.squish.yield_self { |n| n.to_i if n.present? }
   end
 
   def listen
@@ -43,7 +47,7 @@ class EventAPIListener
   end
 
   def jwt_public_key
-    pem = Base64.urlsafe_decode64(get_env('PUBLIC_KEY'))
+    pem = Base64.urlsafe_decode64(event_api_jwt_env('PUBLIC_KEY'))
     OpenSSL::PKey.read(pem)
   end
   memoize :jwt_public_key
@@ -51,12 +55,12 @@ class EventAPIListener
   def token_verification_options
     # We set option only if it is not blank.
     { verify_jti: true,
-      iss:        get_env('ISSUER').to_s.squish.presence,
-      verify_iss: get_env('ISSUER').present?,
-      aud:        get_env('AUDIENCE').to_s.squish.presence,
-      verify_aud: get_env('AUDIENCE').present?,
-      sub:        get_env('SUBJECT'),
-      verify_sub: get_env('SUBJECT').present? }
+      iss:        event_api_jwt_env('ISSUER').to_s.squish.presence,
+      verify_iss: event_api_jwt_env('ISSUER').present?,
+      aud:        event_api_jwt_env('AUDIENCE').to_s.squish.presence,
+      verify_aud: event_api_jwt_env('AUDIENCE').present?,
+      sub:        event_api_jwt_env('SUBJECT'),
+      verify_sub: event_api_jwt_env('SUBJECT').present? }
   end
 
   def algorithm_verification_options
@@ -65,10 +69,10 @@ class EventAPIListener
 
   def timing_verification_options
     { verify_expiration: true, verify_not_before: true, verify_iat: true,
-      leeway:     to_int_from_env('DEFAULT_LEEWAY'),
-      iat_leeway: to_int_from_env('ISSUED_AT_LEEWAY'),
-      exp_leeway: to_int_from_env('EXPIRATION_LEEWAY'),
-      nbf_leeway: to_int_from_env('NOT_BEFORE_LEEWAY') }
+      leeway:     event_api_jwt_env_to_int('DEFAULT_LEEWAY'),
+      iat_leeway: event_api_jwt_env_to_int('ISSUED_AT_LEEWAY'),
+      exp_leeway: event_api_jwt_env_to_int('EXPIRATION_LEEWAY'),
+      nbf_leeway: event_api_jwt_env_to_int('NOT_BEFORE_LEEWAY') }
   end
 
   def rabbitmq_credentials
@@ -107,10 +111,6 @@ class EventAPIListener
                                         .merge(algorithm_verification_options)
     JWT::Multisig.verify_jwt JSON.parse(payload), { @application.to_sym => jwt_public_key },
                              options.compact
-  end
-
-  def to_int_from_env(suffix)
-    get_env(suffix).to_s.squish.yield_self { |n| n.to_i if n.present? }
   end
 
   class << self
