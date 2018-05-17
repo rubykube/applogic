@@ -1,5 +1,34 @@
 defaults: &defaults
 
+  # Event API RabbitMQ setting.
+  EVENT_API_RABBITMQ_URL:      ~ # Set only this variable or use the variables below to set each setting separately.
+  EVENT_API_RABBITMQ_HOST:     localhost
+  EVENT_API_RABBITMQ_PORT:     '5672'
+  EVENT_API_RABBITMQ_USERNAME: guest
+  EVENT_API_RABBITMQ_PASSWORD: guest
+
+  # Peatio Event API JWT key setting.
+  PEATIO_EVENT_API_JWT_PUBLIC_KEY:        ~     # Mandatory.
+  PEATIO_EVENT_API_JWT_ALGORITHM:         RS256 # JWT signing algorithm (mandatory).
+  PEATIO_EVENT_API_JWT_ISSUER:            ~     # JWT issuer name (optional).
+  PEATIO_EVENT_API_JWT_AUDIENCE:          ~     # Optional.
+  PEATIO_EVENT_API_JWT_SUBJECT:           ~     # Optional.
+  PEATIO_EVENT_API_JWT_DEFAULT_LEEWAY:    ~     # Seconds (optional).
+  PEATIO_EVENT_API_JWT_ISSUED_AT_LEEWAY:  ~     # Seconds (optional).
+  PEATIO_EVENT_API_JWT_EXPIRATION_LEEWAY: ~     # Seconds (optional).
+  PEATIO_EVENT_API_JWT_NOT_BEFORE_LEEWAY: ~     # Seconds (optional).
+
+  # Barong Event API JWT key setting.
+  BARONG_EVENT_API_JWT_PUBLIC_KEY:        ~     # Mandatory.
+  BARONG_EVENT_API_JWT_ALGORITHM:         RS256 # JWT signing algorithm (mandatory).
+  BARONG_EVENT_API_JWT_ISSUER:            ~     # JWT issuer name (optional).
+  BARONG_EVENT_API_JWT_AUDIENCE:          ~     # Optional.
+  BARONG_EVENT_API_JWT_SUBJECT:           ~     # Optional.
+  BARONG_EVENT_API_JWT_DEFAULT_LEEWAY:    ~     # Seconds (optional).
+  BARONG_EVENT_API_JWT_ISSUED_AT_LEEWAY:  ~     # Seconds (optional).
+  BARONG_EVENT_API_JWT_EXPIRATION_LEEWAY: ~     # Seconds (optional).
+  BARONG_EVENT_API_JWT_NOT_BEFORE_LEEWAY: ~     # Seconds (optional).
+
 development:
   <<: *defaults
 
