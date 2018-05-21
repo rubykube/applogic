@@ -29,8 +29,9 @@ defaults: &defaults
   BARONG_EVENT_API_JWT_EXPIRATION_LEEWAY: ~     # Seconds (optional).
   BARONG_EVENT_API_JWT_NOT_BEFORE_LEEWAY: ~     # Seconds (optional).
 
-  # Default mails sender.
-  SENDER_EMAIL: ~
+  # Default mails sender settings.
+  SENDER_EMAIL:             ~
+  EMAIL_CONFIRMATION_ROOT:  ~
 
 development:
   <<: *defaults
