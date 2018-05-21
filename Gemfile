@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'bunny',                            '~> 2.9', require: false
 gem 'figaro',                           '~> 1.1'
+gem 'email_validator',                  '~> 1.6'
 gem 'jwt-multisig',                     '~> 1.0'
 gem 'memoist',                          '~> 0.16'
 gem 'mini_racer',                       '~> 0.1', require: false
