@@ -16,12 +16,12 @@ gem 'uglifier',                         '~> 4.1'
 gem 'validates_lengths_from_database',  '~> 0.7.0'
 
 group :development, :test do
+  gem 'faker',      '~> 1.8'
   gem 'pry-byebug', '~> 3.5'
 end
 
 group :test do
   gem 'factory_bot_rails',  '~> 4.8'
-  gem 'faker',              '~> 1.8'
   gem 'rspec-rails',        '~> 3.7'
   gem 'rubocop',            '~> 0.55', require: false
   gem 'shoulda-matchers',   '~> 3.1'
