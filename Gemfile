@@ -14,7 +14,6 @@ gem 'sass-rails',                       '~> 5.0'
 gem 'uglifier',                         '~> 4.1'
 gem 'validates_lengths_from_database',  '~> 0.7.0'
 
-
 group :development, :test do
   gem 'pry-byebug', '~> 3.5'
 end
