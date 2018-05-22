@@ -24,7 +24,7 @@ RSpec.describe Barong::Model::AccountCreatedConsumer do
 
     it 'triggers the verification email mailer' do
       expect(BarongMailer).to receive(:verification_email)
-                                 .with('email@example.com', 'n1Ytj6Hy57YpfueA2vtmnwJQs583bpYn7Wsfr')
+        .with('email@example.com', 'n1Ytj6Hy57YpfueA2vtmnwJQs583bpYn7Wsfr')
       call
     end
   end
