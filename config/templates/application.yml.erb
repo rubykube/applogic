@@ -30,8 +30,8 @@ defaults: &defaults
   BARONG_EVENT_API_JWT_NOT_BEFORE_LEEWAY: ~     # Seconds (optional).
 
   # Default mails sender settings.
-  SENDER_EMAIL:             ~
-  EMAIL_CONFIRMATION_ROOT:  ~
+  SENDER_EMAIL:                    ~
+  EMAIL_CONFIRMATION_URL_TEMPLATE: 'http://barong:3000/accounts/confirmation?confirmation_token=<token>' # Mandatory.
 
 development:
   <<: *defaults
