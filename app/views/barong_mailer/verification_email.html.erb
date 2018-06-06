@@ -1,2 +1,5 @@
-<h3> Account Verification </h3>
-<%= link_to 'Verify Email Address', ENV['EMAIL_CONFIRMATION_URL_TEMPLATE'].gsub('#{token}', @token) %>
+<p>Welcome <%= @email %>!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<%= link_to 'Verify Account Email', @confirmation_link %>
