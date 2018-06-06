@@ -31,7 +31,7 @@ defaults: &defaults
 
   # Default mails sender settings.
   SENDER_EMAIL:                    ~
-  EMAIL_CONFIRMATION_URL_TEMPLATE: 'http://barong:3000/accounts/confirmation?confirmation_token=<token>' # Mandatory.
+  EMAIL_CONFIRMATION_URL_TEMPLATE: 'http://barong:3000/accounts/confirmation?confirmation_token=#{token}' # Mandatory.
 
 development:
   <<: *defaults
