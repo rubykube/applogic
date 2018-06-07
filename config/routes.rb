@@ -2,5 +2,7 @@
 
 Rails.application.routes.draw do
   # Frontend API routes.
-  mount FrontendAPI::Base, at: FrontendAPI::Base::PREFIX
+  namespace :api do
+    mount Frontend::Base, at: Frontend::Base.prefix
+  end
 end
