@@ -23,26 +23,26 @@ module Faraday
 
     def describe
       ["-- HTTP #{status} #{reason_phrase} --",
-       "",
-       "-- Request URL --",
+       '',
+       '-- Request URL --',
        env.url.to_s,
-       "",
-       "-- Request Method --",
+       '',
+       '-- Request Method --',
        env.method.to_s.upcase,
-       "",
-       "-- Request headers --",
+       '',
+       '-- Request headers --',
        env.request_headers.to_json,
-       "",
-       "-- Request body --",
+       '',
+       '-- Request body --',
        env.request_body.to_s,
-       "",
-       "-- Response headers --",
+       '',
+       '-- Response headers --',
        env.response_headers.to_json,
-       "",
-       "-- Response body --",
+       '',
+       '-- Response body --',
        env.body.to_s,
-       ""
-      ].join("\n")
+       ''
+      ].join('\n')
     end
   end
 end
