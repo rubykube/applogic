@@ -16,6 +16,7 @@ gem 'rails',                            '~> 5.1.5'
 gem 'sass-rails',                       '~> 5.0'
 gem 'uglifier',                         '~> 4.1'
 gem 'validates_lengths_from_database',  '~> 0.7.0'
+gem 'faraday'
 
 group :development, :test do
   gem 'faker',      '~> 1.8'
