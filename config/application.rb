@@ -31,5 +31,9 @@ module Applogic
     config.generators.system_tests = nil
 
     config.api_only = true
+
+    # Add app/api to paths, autoload paths
+    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
   end
 end
