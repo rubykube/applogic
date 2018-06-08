@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 require 'securerandom'
 
@@ -29,11 +31,6 @@ class ManagementAPIv1Client
       iss:  'applogic' } # TODO: Configure.
 
     jwt = JWT::Multisig.generate_jwt(payload, keychain, algorithms)
-
-    if action && action[:requires_barong_totp]
-      #jwt = Barong::ManagementAPIv1Client.new.totp_sign(jwt) # TODO: Barong::ManagementAPIv1Client #totp_sign
-      raise ArgumentError "Barong::ManagementAPIv1Client"
-    end
 
     Faraday.public_send(request_method, @root_api_url.to_s + request_path, jwt.to_json, { # TODO: URL join.
       'Content-Type' => 'application/json',
