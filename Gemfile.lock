@@ -247,7 +247,7 @@ DEPENDENCIES
   email_validator (~> 1.6)
   factory_bot_rails (~> 4.8)
   faker (~> 1.8)
-  faraday
+  faraday (~> 0.15.0)
   figaro (~> 1.1)
   grape (~> 1.0)
   grape-swagger (~> 0.29)
