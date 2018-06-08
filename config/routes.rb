@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  mount BaseAPI, at: '/'
+  mount BaseAPI, at: '/api'
 end
