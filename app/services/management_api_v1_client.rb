@@ -5,7 +5,7 @@ require 'securerandom'
 
 class ManagementAPIv1Client
   def initialize(root_url, security_configuration)
-    @root_api_url           = URI.parse(root_url + '/management_api/v1') # TODO: URL join.
+    @root_api_url           = URI.join(root_url, '/management_api/v1')
     @security_configuration = security_configuration
   end
 
@@ -32,7 +32,7 @@ class ManagementAPIv1Client
 
     jwt = JWT::Multisig.generate_jwt(payload, keychain, algorithms)
 
-    Faraday.public_send(request_method, @root_api_url.to_s + request_path, jwt.to_json, { # TODO: URL join.
+    Faraday.public_send(request_method, URI.join(@root_api_url.to_s + request_path).to_s, jwt.to_json, {
       'Content-Type' => 'application/json',
       'Accept'       => 'application/json'
     }).assert_success!.yield_self { |response| JSON.parse(response.body) }
