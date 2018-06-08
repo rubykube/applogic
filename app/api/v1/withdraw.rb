@@ -2,11 +2,23 @@
 
 module V1
   class Withdraw < Grape::API
-    desc 'List your withdraws as paginated collection.', scopes: %w[ history ]
+    desc 'Request a withdraw'
     params do
+      requires :currency,
+               type: String,
+               desc: 'Any supported currency: USD, BTC, ETH.'
+      requires :amount,
+               type: BigDecimal,
+               desc: 'Withdraw amount.'
+      requires :otp,
+               type: String,
+               desc: 'Two-factor authentication code'
+      requires :rid,
+               type: String,
+               desc: 'The beneficiary ID or wallet address on the Blockchain.'
     end
 
-    get '/withdraws' do
+    post '/withdraws' do
     end
   end
 end
