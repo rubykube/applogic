@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 gem 'bunny',                            '~> 2.9', require: false
 gem 'email_validator',                  '~> 1.6'
 gem 'figaro',                           '~> 1.1'
-gem 'grape',                            '~> 1.0.3'
-gem 'grape-swagger',                    '~> 0.29.0'
+gem 'grape',                            '~> 1.0'
+gem 'grape-swagger',                    '~> 0.29'
 gem 'jwt-multisig',                     '~> 1.0'
 gem 'memoist',                          '~> 0.16'
 gem 'mini_racer',                       '~> 0.1', require: false
@@ -32,6 +32,6 @@ end
 
 group :development do
   gem 'annotate',              '~> 2.7'
-  gem 'grape_on_rails_routes', '~> 0.3.2'
+  gem 'grape_on_rails_routes', '~> 0.3'
   gem 'listen',                '>= 3.0.5', '< 3.2'
 end
