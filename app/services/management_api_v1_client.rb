@@ -31,7 +31,7 @@ class ManagementAPIv1Client
     jwt = JWT::Multisig.generate_jwt(payload, keychain, algorithms)
 
     if action && action[:requires_barong_totp]
-      #jwt = Barong::ManagementAPIv1Client.new.totp_sign(jwt)
+      #jwt = Barong::ManagementAPIv1Client.new.totp_sign(jwt) # TODO: Barong::ManagementAPIv1Client #totp_sign
       raise ArgumentError "Barong::ManagementAPIv1Client"
     end
 
@@ -42,12 +42,3 @@ class ManagementAPIv1Client
   end
 end
 
-class Peatio::ManagementAPIv1Client < ManagementAPIv1Client
-  def initialize(*)
-    super ENV.fetch('PEATIO_ROOT_URL'), Rails.configuration.x.peatio_management_api_v1_configuration
-  end
-
-  def create_withdraw(parameters = {})
-    request(:post, '/withdraws/new', parameters, action: :write_withdraws)
-  end
-end

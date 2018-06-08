@@ -26,6 +26,7 @@ tags
 
 # Ignore config files
 /config/application.yml
+/config/peatio_management_api_v1.yml
 
 # Ignore vim temporary files
 **/*.swp
