@@ -49,15 +49,15 @@ barong:
 #
 #  actions:
 #    write_labels:
-#      permitted_signers:     ['applogic']
-#      mandatory_signers:     ['applogic']
+#      required_signatures:     ['applogic']
 #      requires_barong_totp:  true
 #
 # The available actions include:
 #   – write_labels
 #
   actions: {}
-########################################################################################################################
+
+
 peatio:
 # Be sure to restart your server when you modify this file.
 #
@@ -106,12 +106,10 @@ peatio:
 #
 #  actions:
 #    read_deposits:
-#      permitted_signers:     ['applogic']
-#      mandatory_signers:     ['applogic']
+#      required_signatures:   ['applogic']
 #      requires_barong_totp:  true
 #    write_deposits:
-#      permitted_signers:     ['applogic']
-#      mandatory_signers:     ['applogic']
+#      required_signatures:   ['applogic']
 #      requires_barong_totp:  false
 #
 # The available actions include:
