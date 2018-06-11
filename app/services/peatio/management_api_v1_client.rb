@@ -7,7 +7,11 @@ module Peatio
     end
 
     def create_withdraw(request_params = {})
-      request(:post, '/withdraws/new', request_params, action: :write_withdraws)
+      action = :write_withdraws
+      jwt = payload(request_params)
+              .yield_self { |p| generate_jwt(p) }
+              .yield_self { |j| action[:requires_barong_totp] ? Barong::ManagementAPIv1Client.new.otp_sign(request_params.merge(jwt: j)) : j}
+      request(:post, '/withdraws/new', jwt, jwt: true)
     end
   end
 end

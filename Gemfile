@@ -29,6 +29,7 @@ group :test do
   gem 'rubocop',            '~> 0.55', require: false
   gem 'shoulda-matchers',   '~> 3.1'
   gem 'simplecov',          '0.12.0'
+  gem 'webmock',            '~> 3.3'
 end
 
 group :development do

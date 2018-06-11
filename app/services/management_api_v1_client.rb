@@ -6,18 +6,19 @@ require 'securerandom'
 class ManagementAPIv1Client
   extend Memoist
 
+  attr_accessor :action
   def initialize(root_url, security_configuration)
     @root_api_url = URI.join(root_url, '/management_api/v1')
     @security_configuration = security_configuration
   end
 
   def request(request_method, request_path, request_parameters, options = {})
+    options = { jwt: false }.merge(options)
     raise ArgumentError, "Request method is not supported: #{request_method.inspect}." unless request_method.in?(%i[post put])
 
-    @action = @security_configuration[:actions].fetch(options[:action]) if options.key?(:action)
-    jwt     = generate_jwt(payload(request_parameters))
+    request_parameters = generate_jwt(payload(request_parameters)) unless options[:jwt]
 
-    Faraday.public_send(request_method, URI.join(@root_api_url.to_s + request_path).to_s, jwt.to_json, {
+    Faraday.public_send(request_method, URI.join(@root_api_url.to_s + request_path).to_s, request_parameters.to_json, {
       'Content-Type' => 'application/json',
       'Accept'       => 'application/json'
     }).assert_success!.yield_self { |response| JSON.parse(response.body) }
@@ -26,13 +27,17 @@ class ManagementAPIv1Client
   def keychain(field)
     {}.tap do |h|
       @security_configuration[:keychain].each do |id, key|
-        next unless @action
-        next unless id.in?(@action[:required_signatures])
+        next unless action
+        next unless id.in?(action[:required_signatures])
         h[id] = key[field]
       end
     end
   end
   memoize :keychain
+
+  def action=(action)
+    @action = @security_configuration[:actions].fetch(action)
+  end
 
   def payload(data)
     {
