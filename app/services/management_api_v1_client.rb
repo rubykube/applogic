@@ -4,6 +4,7 @@ require 'uri'
 require 'securerandom'
 
 class ManagementAPIv1Client
+  extend Memoist
 
   def initialize(root_url, security_configuration)
     @root_api_url = URI.join(root_url, '/management_api/v1')
@@ -12,8 +13,9 @@ class ManagementAPIv1Client
 
   def request(request_method, request_path, request_parameters, options = {})
     raise ArgumentError, "Request method is not supported: #{request_method.inspect}." unless request_method.in?(%i[post put])
-    #action = @security_configuration[:actions].fetch(options[:action]) if options.key?(:action)
-    jwt = generate_jwt(payload(request_parameters))
+
+    @action = @security_configuration[:actions].fetch(options[:action]) if options.key?(:action)
+    jwt     = generate_jwt(payload(request_parameters))
 
     Faraday.public_send(request_method, URI.join(@root_api_url.to_s + request_path).to_s, jwt.to_json, {
       'Content-Type' => 'application/json',
@@ -24,8 +26,8 @@ class ManagementAPIv1Client
   def keychain(field)
     {}.tap do |h|
       @security_configuration[:keychain].each do |id, key|
-        next unless action
-        next unless id.in?(action[:required_signatures])
+        next unless @action
+        next unless id.in?(@action[:required_signatures])
         h[id] = key[field]
       end
     end
