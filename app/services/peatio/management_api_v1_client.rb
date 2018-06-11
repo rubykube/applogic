@@ -7,6 +7,9 @@ module Peatio
     end
 
     def create_withdraw(request_params = {})
+      if action
+
+      end
       request(:post, '/withdraws/new', request_params, action: :write_withdraws)
     end
   end
