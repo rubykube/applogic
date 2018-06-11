@@ -14,7 +14,8 @@ class ManagementAPIv1Client
   def request(request_method, request_path, request_parameters, options = {})
     options = { jwt: false }.merge(options)
     raise ArgumentError, "Request method is not supported: #{request_method.inspect}." unless request_method.in?(%i[post put])
-    @action = @security_configuration[:actions].fetch(options[:action]) if options.key?(:action)
+
+    @action = @security_configuration[:actions].fetch(options[:action]) if !@action && options[:action]
 
     request_parameters = generate_jwt(payload(request_parameters)) unless options[:jwt]
 
@@ -33,7 +34,7 @@ class ManagementAPIv1Client
       end
     end
   end
-  memoize :keychain
+  # memoize :keychain
 
   def payload(data)
     {
