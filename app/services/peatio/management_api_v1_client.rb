@@ -7,11 +7,13 @@ module Peatio
     end
 
     def create_withdraw(request_params = {})
-      action = :write_withdraws
-      jwt = payload(request_params)
+      action = @security_configuration[:actions].fetch(:write_withdraws)
+      jwt = payload(request_params.slice(:uid, :tid, :rid, :currency, :amount, :action))
               .yield_self { |p| generate_jwt(p) }
-              .yield_self { |j| action[:requires_barong_totp] ? Barong::ManagementAPIv1Client.new.otp_sign(request_params.merge(jwt: j)) : j}
-      request(:post, '/withdraws/new', jwt, jwt: true)
+              .yield_self do |j|
+                action[:requires_barong_totp] ? Barong::ManagementAPIv1Client.new.otp_sign(request_params.merge(jwt: j)) : j
+              end
+      request(:post, '/withdraws/new', jwt, jwt: true, action: :write_withdraws)
     end
   end
 end
