@@ -7,8 +7,9 @@ module Barong
     end
 
     def otp_sign(request_params = {})
+      self.action = :otp_sign
       params = request_params.slice(:account_uid, :otp_code, :jwt)
-      request(:post, '/otp/sign', params, action: :otp_sign)
+      request(:post, '/otp/sign', params)
     end
   end
 end
