@@ -13,7 +13,7 @@ class BaseAPI < Grape::API
   rescue_from(Grape::Exceptions::ValidationErrors) { |e| error!(e.message, 422) }
   rescue_from(ActiveRecord::RecordNotFound) { error!('Record is not found', 404) }
 
-  # use BaseAPI::V1::JWTAuthenticationMiddleware
+  use BaseAPI::V1::JWTAuthenticationMiddleware
 
   mount V1::Base
 
