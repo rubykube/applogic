@@ -38,7 +38,7 @@ actions:
   write_withdraws:
     required_signatures:  ['applogic']
 #    requires_barong_totp: true
-
- params={:uid=>"ysavchuk@heliostech.fr", :rid=>"12345", :currency=>"btc", :amount=>10}
- Peatio::ManagementAPIv1Client.new.create_withdraw params
+#
+# params={:uid=>"ysavchuk@heliostech.fr", :rid=>"12345", :currency=>"btc", :amount=>10}
+# Peatio::ManagementAPIv1Client.new.create_withdraw params
 

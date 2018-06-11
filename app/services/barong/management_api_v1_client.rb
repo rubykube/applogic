@@ -9,5 +9,9 @@ module Barong
     def otp_sign(request_params = {})
       # TODO
     end
+
+    def payload(data = {})
+
+    end
   end
 end
