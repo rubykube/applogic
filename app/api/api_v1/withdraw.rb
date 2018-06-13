@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-module V1
+module APIv1
   class Withdraw < Grape::API
+    before { authenticate! }
+
     desc 'Request a withdraw'
     params do
       requires :currency,
@@ -19,6 +21,12 @@ module V1
     end
 
     post '/withdraws' do
+      Peatio::ManagementAPIv1Client.new.create_withdraw \
+                                          uid:      env['api.v1.authenticated_uid'],
+                                          currency: params[:currency],
+                                          amount:   params[:amount],
+                                          otp_code: params[:otp],
+                                          rid:      params[:rid]
     end
   end
 end

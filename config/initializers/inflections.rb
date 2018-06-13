@@ -17,4 +17,5 @@ ActiveSupport::Inflector.inflections :en do |inflect|
   inflect.acronym 'API'
   inflect.acronym 'JWT'
   inflect.acronym 'v1'
+  inflect.acronym 'CORS'
 end

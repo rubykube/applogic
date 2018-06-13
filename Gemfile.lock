@@ -97,6 +97,9 @@ GEM
       virtus (>= 1.0.0)
     grape-swagger (0.29.0)
       grape (>= 0.16.2)
+    grape_logging (1.8.0)
+      grape
+      rack
     grape_on_rails_routes (0.3.2)
       rails (>= 3.1.1)
     hashdiff (0.3.7)
@@ -270,6 +273,7 @@ DEPENDENCIES
   figaro (~> 1.1)
   grape (~> 1.0)
   grape-swagger (~> 0.29)
+  grape_logging (~> 1.8)
   grape_on_rails_routes (~> 0.3)
   jwt-multisig (~> 1.0)
   listen (>= 3.0.5, < 3.2)

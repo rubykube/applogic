@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BaseAPI < Grape::API
+  PREFIX = '/api'
+
   cascade false
 
   format         :json
@@ -9,24 +11,20 @@ class BaseAPI < Grape::API
 
   do_not_route_options!
 
-  # rescue_from(BaseAPI::V1::Exceptions::Base) { |e| error!(e.message, e.status, e.headers) }
+  logger Rails.logger.dup
+  logger.formatter = GrapeLogging::Formatters::Rails.new
+  use GrapeLogging::Middleware::RequestLogger,
+      logger:    logger,
+      log_level: :info,
+      include:   [GrapeLogging::Loggers::Response.new,
+                  GrapeLogging::Loggers::FilterParameters.new,
+                  GrapeLogging::Loggers::ClientEnv.new,
+                  GrapeLogging::Loggers::RequestHeaders.new]
+
   rescue_from(Grape::Exceptions::ValidationErrors) { |e| error!(e.message, 422) }
   rescue_from(ActiveRecord::RecordNotFound) { error!('Record is not found', 404) }
 
-  use BaseAPI::V1::JWTAuthenticationMiddleware
-
-  mount V1::Base
-
-  add_swagger_documentation base_path: '/api',
-                            info: {
-                              title: 'API v1',
-                              description: 'API is client-to-server API'
-                            },
-                            api_version: 'v1',
-                            doc_version: '0.0.1',
-                            hide_format: true,
-                            hide_documentation_path: true,
-                            mount_path: '/swagger_doc'
+  mount APIv1::Base
 
   route :any, '*path' do
     raise StandardError, 'Unable to find endpoint'
