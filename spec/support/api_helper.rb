@@ -51,7 +51,7 @@ module APITestHelpers
       jti: SecureRandom.uuid,
       sub: 'session',
       iss: 'someone',
-      aud: ['user']
+      aud: ['barong']
   end
 
   #
