@@ -41,7 +41,7 @@ describe APIv1::Auth::Middleware, type: :request do
 
     it 'should allow access when valid token is given' do
       api_get '/', token: token
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to eq user.uid
     end
   end
