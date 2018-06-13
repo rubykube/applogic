@@ -14,7 +14,7 @@ module Peatio
                 action[:requires_barong_totp] ?
                   Barong::ManagementAPIv1Client.new.otp_sign(request_params.merge(jwt: jwt, account_uid: request_params[:uid])) : jwt
               end
-      request(:post, '/withdraws/new', jwt, jwt: true)
+      request(:post, 'withdraws/new', jwt, jwt: true)
     end
   end
 end

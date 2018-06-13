@@ -21,12 +21,13 @@ module APIv1
     end
 
     post '/withdraws' do
-      Peatio::ManagementAPIv1Client.new.create_withdraw \
-                                          uid:      env['api.v1.authenticated_uid'],
-                                          currency: params[:currency],
-                                          amount:   params[:amount],
-                                          otp_code: params[:otp],
-                                          rid:      params[:rid]
+      Peatio::ManagementAPIv1Client.new.create_withdraw(
+        uid:      env['api.v1.authenticated_uid'],
+        currency: params[:currency],
+        amount:   params[:amount],
+        otp_code: params[:otp],
+        rid:      params[:rid]
+      )
     end
   end
 end

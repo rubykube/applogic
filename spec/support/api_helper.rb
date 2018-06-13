@@ -3,6 +3,10 @@
 module APITestHelpers
   extend Memoist
 
+  def json_body
+    JSON.parse(response.body)
+  end
+
   def post_json(destination, body, headers = {})
     post destination,
          String === body ? body : body.to_json,
@@ -19,7 +23,7 @@ module APITestHelpers
     headers = options.fetch(:headers, {})
     params  = options.fetch(:params, {})
     options[:token].tap { |t| headers['Authorization'] = 'Bearer ' + t if t }
-    send(method, url, params: params, headers: headers)
+    public_send(method, url, params: params, headers: headers)
   end
 
   def api_get(*args)
@@ -81,6 +85,29 @@ module APITestHelpers
   def multisig_jwt_management_api_v1(payload, *signers)
     multisig_jwt(payload, management_api_v1_keychain, signers, management_api_v1_algorithms)
   end
+
+  def set_security_configuration(application, actions:, version: 'v1')
+    config = { jwt: {} }
+    config[:keychain] = management_api_v1_keychain.each_with_object({}) do |(signer, key), memo|
+      memo[signer] = { algorithm: management_api_v1_algorithms.fetch(signer), value: key }
+    end
+    config[:actions] = actions
+
+    config_key = "#{application}_management_api_#{version}_configuration="
+    Rails.configuration.x.public_send config_key, config.merge(action)
+  end
+
+  def management_api_v1_keychain
+    {
+      applogic:  OpenSSL::PKey::RSA.generate(2048)
+    }
+  end
+  memoize :management_api_v1_keychain
+
+  def management_api_v1_algorithms
+    management_api_v1_keychain.each_with_object({}) { |(k, _v), memo| memo[k] = 'RS256' }
+  end
+  memoize :management_api_v1_algorithms
 end
 
 RSpec.configure { |config| config.include APITestHelpers }

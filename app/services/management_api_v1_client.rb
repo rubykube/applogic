@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'uri'
 require 'securerandom'
 
 class ManagementAPIv1Client
@@ -9,21 +8,37 @@ class ManagementAPIv1Client
   attr_reader :action
 
   def initialize(root_url, security_configuration)
-    @root_api_url = URI.join(root_url, '/management_api/v1')
+    @root_api_url = root_url
     @security_configuration = security_configuration
   end
 
   def request(request_method, request_path, request_parameters, options = {})
     options = { jwt: false }.merge(options)
-    raise ArgumentError, "Request method is not supported: #{request_method.inspect}." unless request_method.in?(%i[post put])
+    unless request_method.in?(%i[post put])
+      raise ArgumentError, "Request method is not supported: #{request_method.inspect}."
+    end
 
     request_parameters = generate_jwt(payload(request_parameters)) unless options[:jwt]
 
-    Faraday.public_send(request_method, URI.join(@root_api_url.to_s + request_path).to_s, request_parameters.to_json, {
-      'Content-Type' => 'application/json',
-      'Accept'       => 'application/json'
-    }).assert_success!.yield_self { |response| JSON.parse(response.body) }
+    http_client
+      .public_send(request_method, build_path(request_path), request_parameters)
+      .assert_success!
+      .yield_self(&:body)
   end
+
+  def build_path(path)
+    "management_api/v1/#{path}"
+  end
+
+  def http_client
+    Faraday.new(url: @root_api_url) do |conn|
+      conn.request :json
+      conn.response :json
+      conn.response :logger if ENV['HTTP_LOGGER']
+      conn.adapter Faraday.default_adapter
+    end
+  end
+  memoize :http_client
 
   def keychain(field)
     {}.tap do |h|
@@ -54,4 +69,3 @@ class ManagementAPIv1Client
     @action = @security_configuration[:actions].fetch(value)
   end
 end
-
