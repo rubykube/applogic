@@ -24,7 +24,9 @@ RUN mkdir -p /opt/vendor/bundle \
  && su app -s /bin/bash -c "bundle install --path /opt/vendor/bundle"
 
 # Copy the main application.
-COPY --chown=app . $APP_HOME
+# NOTE: Use COPY --chown=app . $APP_HOME when Docker Hub will support it.
+COPY . $APP_HOME
+RUN chown -R app:app $APP_HOME
 
 USER app
 
