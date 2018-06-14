@@ -87,14 +87,13 @@ module APITestHelpers
   end
 
   def set_security_configuration(application, actions:, version: 'v1')
-    config = { jwt: {} }
+    config = { jwt: {}, actions: actions }
     config[:keychain] = management_api_v1_keychain.each_with_object({}) do |(signer, key), memo|
       memo[signer] = { algorithm: management_api_v1_algorithms.fetch(signer), value: key }
     end
-    config[:actions] = actions
 
     config_key = "#{application}_management_api_#{version}_configuration="
-    Rails.configuration.x.public_send config_key, config.merge(action)
+    Rails.configuration.x.public_send config_key, config
   end
 
   def management_api_v1_keychain
