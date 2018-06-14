@@ -43,7 +43,7 @@ before_script:
 # Execute all of the commands which should make the build pass or fail.
 script:
   - bundle exec rspec
-  - bundle exec rubocop
+  # - bundle exec rubocop
   - docker build --tag $DOCKERHUB_USER/applogic:latest --cache-from $DOCKERHUB_USER/applogic:latest .
 
 # Execute all of the commands which need to be executed after the build passed.
