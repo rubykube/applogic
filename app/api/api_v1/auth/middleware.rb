@@ -6,8 +6,8 @@ module APIv1
       def before
         return unless auth_by_jwt?
 
-        env['api.v1.authenticated_uid'] = \
-          JWTAuthenticator.new(headers['Authorization']).authenticate!(return: :uid)
+        env['api.v1.authenticated_data'] = \
+          JWTAuthenticator.new(headers['Authorization']).authenticate!
       end
 
       private

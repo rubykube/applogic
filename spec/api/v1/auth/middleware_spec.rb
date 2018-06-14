@@ -9,15 +9,14 @@ describe APIv1::Auth::Middleware, type: :request do
 
     get '/' do
       authenticate!
-      current_user.uid
+      current_uid
     end
   end
 
   let(:app) { TestApp.new }
 
   context 'when using JWT authentication' do
-    let(:user) { create(:user, :level_3) }
-    let(:payload) { { x: 'x', y: 'y', z: 'z', uid: user.uid } }
+    let(:payload) { { x: 'x', y: 'y', z: 'z', uid: 'O90Y88JDPQ7167' } }
     let(:token) { jwt_build(payload) }
 
     it 'should deny access when token is not given' do
@@ -32,17 +31,10 @@ describe APIv1::Auth::Middleware, type: :request do
       expect(response.body).to eq '{"error":{"code":2001,"message":"Authorization failed"}}'
     end
 
-    it 'should deny access when member doesn\'t exist' do
-      payload[:uid] = 'BARONG1234'
-      api_get '/', token: token
-      expect(response.code).to eq '401'
-      expect(response.body).to eq '{"error":{"code":2001,"message":"Authorization failed"}}'
-    end
-
     it 'should allow access when valid token is given' do
       api_get '/', token: token
-      expect(response).to be_success
-      expect(response.body).to eq user.uid
+      expect(response).to be_successful
+      expect(response.body).to eq payload[:uid]
     end
   end
 

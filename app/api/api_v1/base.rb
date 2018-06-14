@@ -19,7 +19,7 @@ module APIv1
                               doc_version: '0.0.1',
                               info: {
                                 title: 'User API V1',
-                                description: 'User API is client-to-server API'
+                                description: 'User API is client-to-server API v.1'
                               },
                               hide_format: true,
                               hide_documentation_path: true

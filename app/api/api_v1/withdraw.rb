@@ -22,7 +22,7 @@ module APIv1
 
     post '/withdraws' do
       Peatio::ManagementAPIv1Client.new.create_withdraw \
-                                          uid:      env['api.v1.authenticated_uid'],
+                                          uid:      current_uid,
                                           currency: params[:currency],
                                           amount:   params[:amount],
                                           otp_code: params[:otp],

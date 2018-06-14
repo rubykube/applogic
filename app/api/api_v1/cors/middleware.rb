@@ -36,7 +36,7 @@ module APIv1
         end
       end
 
-    private
+      private
 
       def request
         @request ||= Grape::Request.new(env)

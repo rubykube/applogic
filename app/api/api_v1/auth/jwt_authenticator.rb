@@ -9,18 +9,14 @@ module APIv1
 
       #
       # Decodes and verifies JWT.
-      # Returns authentic member email or raises an exception.
+      # Returns hash formed with payload including user id (uid) or raises an exception.
       #
-      # @param [Hash] options
-      # @return [String, User, NilClass]
-      def authenticate!(options = {})
-        unless @token_type == 'Bearer'
-          raise AuthorizationError, 'Token type is not provided or invalid.'
-        end
+      # @return [Hash, NilClass]
+      def authenticate!
+        check_token_type
         payload, _header = decode_and_verify_token(@token_value)
-        fetch_user(payload).yield_self do |user|
-          options[:return] == :user ? user : fetch_uid(payload)
-        end
+
+        { uid: fetch_uid(payload) }
       rescue => e
         report_exception(e)
         if AuthorizationError === e
@@ -33,14 +29,20 @@ module APIv1
       #
       # Exception-safe version of #authenticate!.
       #
-      # @return [String, User, NilClass]
+      # @return [Hash, NilClass]
       def authenticate(*args)
         authenticate!(*args)
       rescue
         nil
       end
 
-    private
+      private
+
+      def check_token_type
+        unless @token_type == 'Bearer'
+          raise AuthorizationError, 'Token type is not provided or invalid.'
+        end
+      end
 
       def decode_and_verify_token(token)
         JWT.decode(token, Utils.jwt_public_key, true, token_verification_options)
@@ -49,46 +51,9 @@ module APIv1
         raise AuthorizationError, "Failed to decode and verify JWT: #{e.inspect}."
       end
 
-      def fetch_email(payload)
-        payload[:email].to_s.tap do |email|
-          raise(AuthorizationError, 'E-Mail is blank.') if email.blank?
-          raise(AuthorizationError, 'E-Mail is invalid.') unless EmailValidator.valid?(email)
-        end
-      end
-
       def fetch_uid(payload)
         payload.fetch(:uid).tap do |uid|
           raise(AuthorizationError, 'UID is blank.') if uid.blank?
-        end
-      end
-
-      def fetch_scopes(payload)
-        Array.wrap(payload[:scopes]).map(&:to_s).map(&:squash).reject(&:blank).tap do |scopes|
-          raise(AuthorizationError, 'Token scopes are not defined.') if scopes.empty?
-        end
-      end
-
-      def fetch_user(payload)
-        if payload[:iss] == 'barong'
-          from_barong_payload(payload)
-        else
-          User.find_by(uid: fetch_uid(payload))
-        end
-      end
-
-      def from_barong_payload(payload)
-        User.find_or_initialize_by(uid: fetch_uid(payload)).tap do |member|
-          member.transaction do
-            attributes = {
-              email: fetch_email(payload),
-              state: payload.fetch(:state).to_s,
-              level: payload.fetch(:level).to_i
-            }
-
-            # Prevent overheat validations.
-            member.assign_attributes(attributes)
-            member.save!(validate: member.new_record?)
-          end
         end
       end
 

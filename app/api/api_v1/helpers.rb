@@ -5,15 +5,15 @@ module APIv1
     extend Memoist
 
     def authenticate!
-      current_user || raise(AuthorizationError)
+      current_uid || raise(AuthorizationError)
     end
 
-    def current_user
-      key = 'api.v1.authenticated_uid' # JWT authentication provides user uid.
+    def current_uid
+      key = 'api.v1.authenticated_data' # JWT authentication provides user uid.
       return unless env.key?(key)
 
-      User.find_by(uid: env[key])
+      env[key][:uid]
     end
-    memoize :current_user
+    memoize :current_uid
   end
 end
