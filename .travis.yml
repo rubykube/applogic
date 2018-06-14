@@ -30,7 +30,7 @@ before_install:
   - npm i -g yarn
   - docker pull $DOCKERHUB_USER/applogic:latest || true
   - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD || true # Don't let the build fail in case of broken authentication in Docker Hub.
-
+  - ./bin/init_config
 
 # Execute all of the commands which should install application dependencies.
 install:
