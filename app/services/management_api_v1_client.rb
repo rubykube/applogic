@@ -34,7 +34,6 @@ class ManagementAPIv1Client
     Faraday.new(url: @root_api_url) do |conn|
       conn.request :json
       conn.response :json
-      conn.response :logger if ENV['HTTP_LOGGER']
       conn.adapter Faraday.default_adapter
     end
   end
