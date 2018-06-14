@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 describe APIv1::Withdraw, type: :request do
-  let(:user) { create(:user, :level_3) }
-  let(:token) { jwt_for(user) }
+  let(:token) { jwt_build(uid: 'O90Y88JDPQ7167') }
 
   def check_cors(response)
     expect(response.headers['Access-Control-Allow-Origin']).to eq('https://peatio.tech')

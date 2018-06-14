@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Barong::Model::AccountCreatedConsumer do
-  let!(:user) { create(:user) }
-
   describe '.call' do
     let(:event) do
       {

@@ -35,13 +35,6 @@ module APITestHelpers
   end
 
   #
-  # Generates valid JWT for user, allows to pass additional payload.
-  #
-  def jwt_for(user, payload = { x: 'x', y: 'y', z: 'z' })
-    jwt_build(payload.merge(uid: user.uid))
-  end
-
-  #
   # Generates valid JWT. Accepts payload as argument. Add fields required for JWT to be valid.
   #
   def jwt_build(payload)
