@@ -17,9 +17,9 @@ module Faraday
 
   class Response
     def assert_success!
-      return self if success?
-      Rails.logger.debug { describe }
-      raise Faraday::Error, [ status, env.body ]
+      self.tap do |r|
+        Rails.logger.debug { describe } unless r.success?
+      end
     end
 
     def describe
