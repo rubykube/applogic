@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 describe APIv1::Withdraw, type: :request do
   let(:token) { jwt_build(uid: 'O90Y88JDPQ7167') }
 

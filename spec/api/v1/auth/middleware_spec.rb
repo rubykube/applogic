@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 describe APIv1::Auth::Middleware, type: :request do
   class TestApp < Grape::API
     helpers APIv1::Helpers

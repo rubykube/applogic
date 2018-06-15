@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 describe APIv1::Auth::JWTAuthenticator do
   let :token do
     'Bearer ' + jwt_build(payload)
