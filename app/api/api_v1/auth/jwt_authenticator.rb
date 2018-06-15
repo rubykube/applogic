@@ -30,8 +30,8 @@ module APIv1
       # Exception-safe version of #authenticate!.
       #
       # @return [Hash, NilClass]
-      def authenticate(*args)
-        authenticate!(*args)
+      def authenticate
+        authenticate!
       rescue
         nil
       end
