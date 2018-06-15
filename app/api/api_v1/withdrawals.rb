@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module APIv1
-  class Withdraw < Grape::API
+  class Withdrawals < Grape::API
     before { authenticate! }
 
     desc 'Request a withdraw'
@@ -20,7 +20,7 @@ module APIv1
                desc: 'The beneficiary ID or wallet address on the Blockchain.'
     end
 
-    post '/withdraws' do
+    post '/withdrawals' do
       Peatio::ManagementAPIv1Client.new.create_withdraw \
                                           uid:      current_uid,
                                           currency: params[:currency],

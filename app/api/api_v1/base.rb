@@ -11,7 +11,7 @@ module APIv1
     use APIv1::CORS::Middleware
     use APIv1::Auth::Middleware
 
-    mount APIv1::Withdraw
+    mount APIv1::Withdrawals
 
     add_swagger_documentation base_path: BaseAPI::PREFIX,
                               mount_path: '/swagger',

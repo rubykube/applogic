@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe APIv1::Withdraw, type: :request do
+describe APIv1::Withdrawals, type: :request do
   let(:token) { jwt_build(uid: 'O90Y88JDPQ7167') }
 
   def check_cors(response)
@@ -14,19 +14,19 @@ describe APIv1::Withdraw, type: :request do
 
   it 'sends CORS headers when requesting using OPTIONS' do
     reset! unless integration_session
-    integration_session.send :process, 'OPTIONS', '/api/v1/withdraws'
+    integration_session.send :process, 'OPTIONS', '/api/v1/withdrawals'
     expect(response).to be_successful
     check_cors(response)
   end
 
   it 'sends CORS headers ever when user is not authenticated' do
-    api_post '/api/v1/withdraws'
+    api_post '/api/v1/withdrawals'
     expect(response).to have_http_status 401
     check_cors(response)
   end
 
   it 'sends CORS headers when invalid parameter supplied' do
-    api_post '/api/v1/withdraws', token: token, params: { currency: 'uah' }
+    api_post '/api/v1/withdrawals', token: token, params: { currency: 'uah' }
     expect(response).to have_http_status 422
     check_cors(response)
   end
