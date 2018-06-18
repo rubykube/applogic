@@ -23,7 +23,7 @@ class ManagementAPIv1Client
     http_client
       .public_send(request_method, build_path(request_path), request_parameters)
       .assert_success!
-      .tap { |response| raise ManagementAPIv1Exception, response.body.to_json unless response.success? }
+      .tap { raise ManagementAPIv1Exception response unless response.success? }
   end
 
   def build_path(path)

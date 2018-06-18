@@ -23,7 +23,7 @@ class BaseAPI < Grape::API
 
   rescue_from(Grape::Exceptions::ValidationErrors) { |e| error!(e.message, 422) }
   rescue_from(ActiveRecord::RecordNotFound) { error!('Record is not found', 404) }
-  rescue_from(ManagementAPIv1Exception) {|e| error!(e.message, 422)}
+  rescue_from(ManagementAPIv1Exception) {|e| error!(e.message, e.status.in?(400...500) ? 422 : 503)}
 
   mount APIv1::Base
 

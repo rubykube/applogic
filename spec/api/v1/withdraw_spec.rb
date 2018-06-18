@@ -19,11 +19,11 @@ describe APIv1::Withdraw, type: :request do
 
   describe 'POST /api/v1/withdraws' do
     before do
-      stub_request(:post, 'http://peatio/management_api/v1/withdraws/new')
+      stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
         .to_return(status: peatio_response.status,
                    body: peatio_response.body.to_json.to_s,
                    headers: {})
-      stub_request(:post, 'http://barong/management_api/v1/otp/sign')
+      stub_request(:post, "#{ENV.fetch('BARONG_ROOT_URL')}/management_api/v1/otp/sign")
         .to_return(status: barong_response.status,
                    body: barong_response.body.to_json.to_s,
                    headers: {})
@@ -73,6 +73,10 @@ describe APIv1::Withdraw, type: :request do
     end
 
     context 'when barong responds with errors' do
+      before do
+        stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
+          .to_raise(StandardError)
+      end
       let(:barong_response) do
         OpenStruct.new(status: 422, body: { error: 'OTP code is invalid' })
       end
@@ -85,10 +89,42 @@ describe APIv1::Withdraw, type: :request do
         }
       end
 
-      it 'sends withdrawal request to peatio and barong' do
+      it 'doesn\'t send request to peatio' do
+        expect{ do_request }.to_not raise_error(StandardError)
+      end
+
+      it 'responds with barong error message' do
         do_request
         expect(response.status).to eq 422
-        expect(json_body).to eq peatio_response.body
+        expect(json_body).to eq JSON.parse(barong_response.body.to_json)
+      end
+    end
+
+    context 'when barong responds with internal server error' do
+      before do
+        stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
+          .to_raise(StandardError)
+      end
+      let(:barong_response) do
+        OpenStruct.new(status: 500, body: { })
+      end
+      let(:peatio_actions) do
+        {
+          write_withdraws: {
+            required_signatures: %i[applogic],
+            requires_barong_totp: true
+          }
+        }
+      end
+
+      it 'doesn\'t send request to peatio' do
+        expect{ do_request }.to_not raise_error(StandardError)
+      end
+
+      it 'responds with external services error message' do
+        do_request
+        expect(response.status).to eq 422
+        expect(json_body).to eq({'error' => 'External services error'})
       end
     end
   end

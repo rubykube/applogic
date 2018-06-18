@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 module Peatio
-  class ManagementAPIv1Error < StandardError
-
-  end
-
   class ManagementAPIv1Client < ::ManagementAPIv1Client
     def initialize(*)
       super ENV.fetch('PEATIO_ROOT_URL'), Rails.configuration.x.peatio_management_api_v1_configuration
