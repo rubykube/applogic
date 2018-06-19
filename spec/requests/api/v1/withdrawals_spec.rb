@@ -2,7 +2,11 @@
 
 describe 'POST api/v1/withdrawals' do
   it 'works' do
-    user_api_jwt = jwt_build(uid: 'ID1F467E2B9E', aud: %w[applogic barong peatio])
+    user_api_jwt = jwt_build(
+      uid: 'ID1F467E2B9E',
+      email: 'syber-junkie@example.com',
+      aud: %w[applogic barong peatio]
+    )
 
     headers = {
       'Accept'        => 'application/json',
@@ -13,11 +17,18 @@ describe 'POST api/v1/withdrawals' do
     params = {
       currency: 'BTC',
       amount: '0.01',
-      otp: '111-111-111',
+      otp: '245924',
       rid: '0xb111'
     }
-
-    post '/api/v1/withdrawals', params: params, headers: headers
+    VCR.use_cassette('happy-path') do
+      post '/api/v1/withdrawals', params: params, headers: headers
+    end
     expect(response).to have_http_status(:created)
   end
+
+  it 'throws error if OTP code is wrong' do
+
+  end
+
+
 end

@@ -1,0 +1,77 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://barong.io:4000/management_api/v1/otp/sign
+    body:
+      encoding: UTF-8
+      string: '{"payload":"eyJkYXRhIjp7ImFjY291bnRfdWlkIjoiSUQxRjQ2N0UyQjlFIiwib3RwX2NvZGUiOiIyNDU5MjQiLCJqd3QiOnsicGF5bG9hZCI6ImV5SmtZWFJoSWpwN0luVnBaQ0k2SWtsRU1VWTBOamRGTWtJNVJTSXNJbkpwWkNJNklqQjRZakV4TVNJc0ltTjFjbkpsYm1ONUlqb2lRbFJESWl3aVlXMXZkVzUwSWpvaU1DNHdNU0o5TENKcFlYUWlPakUxTWprek16Z3lNREVzSW1WNGNDSTZNVFV5T1RNek9ESTJNU3dpYW5ScElqb2lZekUwWkdZd09ETTRNV1ExWm1JNFlXUmxOVEZtT1RoaUlpd2lhWE56SWpvaVlYQndiRzluYVdNaWZRIiwic2lnbmF0dXJlcyI6W3sicHJvdGVjdGVkIjoiZXlKaGJHY2lPaUpTVXpJMU5pSjkiLCJoZWFkZXIiOnsia2lkIjoiYXBwbG9naWMifSwic2lnbmF0dXJlIjoiUGpMOVl2OC02bzBXMk1Uc3NjMnhzcWhFODNXa3A5WVY0VmRFU2hPUjlsN3d5OHBxX1EyM1NZMGJ2UnBTb3QwenQ4TVczQkdNbjZPQkVkNnhVdlgtT0lRdmdudjdyYTR6UzdxcDZCQi1pUGZOVWJNZjlZVGVyWklkaHRiSElraWx5NnJLQ3ZSUzMtXzNTbkhmSFNpbTZ4NXJFRkhiQ2xHZ2EtUzRubVE4bFFKdnRNRkFYZ1FUNktpWFNrd1BtLWdqTlFpd1FUZ1BVazhKVmZwS1dJcTQ5emszVG1pMzc1VzBlSGZUblZXU3YwZnJqZ0tJbm5YRFBDNEROWDh6NkF5cnB6NTkyVXVkQzhzRGRVcHAyZHV2WVhBZXBlMEsxU3k5V1lwN29lZjBpUnVuY0M4aTRybjVaY0h6bEVmTy05TmJWbTBQWlJoeUd2UURzRklyaDNXMXhnIn1dfX0sImlhdCI6MTUyOTMzODIwMSwiZXhwIjoxNTI5MzM4MjYxLCJqdGkiOiJiYmQ0NjAwZWYyNmZhYjAzYTBlZTY1ZTAiLCJpc3MiOiJhcHBsb2dpYyJ9","signatures":[{"protected":"eyJhbGciOiJSUzI1NiJ9","header":{"kid":"applogic"},"signature":"MSRuqE10LIGxNQbFqboYscvfRj3sTfE18HNLEUzA8QFBd7KTY5qSWB4QFWpvnWWf2yudqsrYjpmqFIHWAUS2HarvJAx3lih0uqutlFuhnTOtr8_RFuLNoIx0aYF-Q4zvLFIY6kPkoHLOe5AIOM1k2MeQh5vvJwIU67rIIOLNoCbY2AwDhtBKG4u1SOTYR4BNrmpDhkhJ_01RVlk28mQMB97Gzb0xJb9QEle34WdhGpBHQzrHTSNymZY7wbTTeDeX4TkKNCX9w2j-ZnBP6kswGmeLlpHdP6cvdhSC0PWP8vd926cifPGvQ9D1DK326UMmTQpKwZZMCcRSsSPujlNtgA"}]}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Content-Type:
+      - application/json
+      Etag:
+      - W/"17eb31314efb04fa7cf10203ea22ddcd"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9cab0035-4f5a-4074-9013-3424cb29c661
+      X-Runtime:
+      - '0.010946'
+      Content-Length:
+      - '1089'
+    body:
+      encoding: UTF-8
+      string: '{"payload":"eyJkYXRhIjp7InVpZCI6IklEMUY0NjdFMkI5RSIsInJpZCI6IjB4YjExMSIsImN1cnJlbmN5IjoiQlRDIiwiYW1vdW50IjoiMC4wMSJ9LCJpYXQiOjE1MjkzMzgyMDEsImV4cCI6MTUyOTMzODI2MSwianRpIjoiYzE0ZGYwODM4MWQ1ZmI4YWRlNTFmOThiIiwiaXNzIjoiYXBwbG9naWMifQ","signatures":[{"protected":"eyJhbGciOiJSUzI1NiJ9","header":{"kid":"applogic"},"signature":"PjL9Yv8-6o0W2MTssc2xsqhE83Wkp9YV4VdEShOR9l7wy8pq_Q23SY0bvRpSot0zt8MW3BGMn6OBEd6xUvX-OIQvgnv7ra4zS7qp6BB-iPfNUbMf9YTerZIdhtbHIkily6rKCvRS3-_3SnHfHSim6x5rEFHbClGga-S4nmQ8lQJvtMFAXgQT6KiXSkwPm-gjNQiwQTgPUk8JVfpKWIq49zk3Tmi375W0eHfTnVWSv0frjgKInnXDPC4DNX8z6Ayrpz592UudC8sDdUpp2duvYXAepe0K1Sy9WYp7oef0iRuncC8i4rn5ZcHzlEfO-9NbVm0PZRhyGvQDsFIrh3W1xg"},{"protected":"eyJhbGciOiJSUzI1NiJ9","header":{"kid":"barong"},"signature":"0jvl8d-ZJGnay8Sd7jvW_X9MKv6JlHM2vMHpJOSU9Fqdw7h6-SjOkt_87OxFvT9JJFmvJ4j2p-6bTp8iCvaCH9MfgcV9N3ByBidV9Nf7T8kTCBWYEG58N-s42AAkrkWBG8ENfSk00YelPwGdjtbwTTxge_OX9l0dBMeA-x8LvBmwpIWcVHXiA0rZ1ZHYe-K43N6psSjBuDuSzsYQc-056xgMsjgBSY5kKR3niL_lG8bIcrN8fkfWJxmDr9Q78R7_HjNbmJztOVtDx1Td0PlnsDfJoeCo4BTvpZO9h8eXL8mGIV8IcwSrhEN4n1AS9Vy3NxrouIJbBMaT_0K-2YVY9A"}]}'
+    http_version: 
+  recorded_at: Mon, 18 Jun 2018 16:10:01 GMT
+- request:
+    method: post
+    uri: http://peatio.io:5000/management_api/v1/withdraws/new
+    body:
+      encoding: UTF-8
+      string: '{"payload":"eyJkYXRhIjp7InVpZCI6IklEMUY0NjdFMkI5RSIsInJpZCI6IjB4YjExMSIsImN1cnJlbmN5IjoiQlRDIiwiYW1vdW50IjoiMC4wMSJ9LCJpYXQiOjE1MjkzMzgyMDEsImV4cCI6MTUyOTMzODI2MSwianRpIjoiYzE0ZGYwODM4MWQ1ZmI4YWRlNTFmOThiIiwiaXNzIjoiYXBwbG9naWMifQ","signatures":[{"protected":"eyJhbGciOiJSUzI1NiJ9","header":{"kid":"applogic"},"signature":"PjL9Yv8-6o0W2MTssc2xsqhE83Wkp9YV4VdEShOR9l7wy8pq_Q23SY0bvRpSot0zt8MW3BGMn6OBEd6xUvX-OIQvgnv7ra4zS7qp6BB-iPfNUbMf9YTerZIdhtbHIkily6rKCvRS3-_3SnHfHSim6x5rEFHbClGga-S4nmQ8lQJvtMFAXgQT6KiXSkwPm-gjNQiwQTgPUk8JVfpKWIq49zk3Tmi375W0eHfTnVWSv0frjgKInnXDPC4DNX8z6Ayrpz592UudC8sDdUpp2duvYXAepe0K1Sy9WYp7oef0iRuncC8i4rn5ZcHzlEfO-9NbVm0PZRhyGvQDsFIrh3W1xg"},{"protected":"eyJhbGciOiJSUzI1NiJ9","header":{"kid":"barong"},"signature":"0jvl8d-ZJGnay8Sd7jvW_X9MKv6JlHM2vMHpJOSU9Fqdw7h6-SjOkt_87OxFvT9JJFmvJ4j2p-6bTp8iCvaCH9MfgcV9N3ByBidV9Nf7T8kTCBWYEG58N-s42AAkrkWBG8ENfSk00YelPwGdjtbwTTxge_OX9l0dBMeA-x8LvBmwpIWcVHXiA0rZ1ZHYe-K43N6psSjBuDuSzsYQc-056xgMsjgBSY5kKR3niL_lG8bIcrN8fkfWJxmDr9Q78R7_HjNbmJztOVtDx1Td0PlnsDfJoeCo4BTvpZO9h8eXL8mGIV8IcwSrhEN4n1AS9Vy3NxrouIJbBMaT_0K-2YVY9A"}]}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Content-Type:
+      - application/json
+      Etag:
+      - W/"868d495134208558317b15d723ea75ba"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 510ac59d-d2da-4244-9322-6acc5df2b7d2
+      X-Runtime:
+      - '0.292730'
+      Content-Length:
+      - '202'
+    body:
+      encoding: UTF-8
+      string: '{"tid":"TIDBA78DE106C","uid":"ID1F467E2B9E","currency":"btc","type":"coin","amount":"0.01","fee":"0.0","rid":"0xb111","state":"submitted","created_at":"2018-06-18T18:10:02+02:00","blockchain_txid":null}'
+    http_version: 
+  recorded_at: Mon, 18 Jun 2018 16:10:02 GMT
+recorded_with: VCR 4.0.0
