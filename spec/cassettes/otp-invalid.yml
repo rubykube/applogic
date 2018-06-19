@@ -1,0 +1,73 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://barong.io:4000/management_api/v1/otp/sign
+    body:
+      encoding: UTF-8
+      string: '{"payload":"eyJkYXRhIjp7ImFjY291bnRfdWlkIjoiSUQxRjQ2N0UyQjlFIiwib3RwX2NvZGUiOiJ3cm9uZy0yNDU5MjQiLCJqd3QiOnsicGF5bG9hZCI6ImV5SmtZWFJoSWpwN0luVnBaQ0k2SWtsRU1VWTBOamRGTWtJNVJTSXNJbkpwWkNJNklqQjRZakV4TVNJc0ltTjFjbkpsYm1ONUlqb2lRbFJESWl3aVlXMXZkVzUwSWpvaU1DNHdNU0o5TENKcFlYUWlPakUxTWprME1qTXlORFVzSW1WNGNDSTZNVFV5T1RReU16TXdOU3dpYW5ScElqb2lNbVUwT1dFM05UVXpPR1poWlRobU0yWXhPVFZrTURnM0lpd2lhWE56SWpvaVlYQndiRzluYVdNaWZRIiwic2lnbmF0dXJlcyI6W3sicHJvdGVjdGVkIjoiZXlKaGJHY2lPaUpTVXpJMU5pSjkiLCJoZWFkZXIiOnsia2lkIjoiYXBwbG9naWMifSwic2lnbmF0dXJlIjoiaUp6NkhzLTd6b1MxTUVQMVMtS1NzSXRiYU9BTkphX0wwbFVISEJKRU4xU3cwTGVGTFlYY0F1M3JxeDFWckdCYzNobFZYV2Yyc0RQYWlVLWtUVnkyQzU1RkY3YkIxOVdSR3NGd19DUVROYjY3eC1xUENfQXkxWUJuT2pQSkhfWEdkNGhNY2N4cTV2V1JzV19wUHAwN3NBMWdYMnB4VjZvZk9GWVlzQ0dBOUYwMm5qUkFNTUVpY0xBV0xodVB1eGE3T2dVWi1NZ2JmcS1FWDhiNmx6aUROODdaczdueUJoYUt6Uzdwc1dBTmJ2anFDbmJ2TlNiWm1nbFZFcXZMTnJaT3JWRHM2dDFsMmtHaldYTkUwdzA5M3FudFJIX05HWVEzSFdvczVLT1lFcERtT2hNdU9Xa0R4RmFfU0RkbVZSaC02X2FlN1c4SzFHZG9mWExHUm1hUXJBIn1dfX0sImlhdCI6MTUyOTQyMzI0NSwiZXhwIjoxNTI5NDIzMzA1LCJqdGkiOiIwN2M5OGM1YzJmZTFkMjNkMjRhYjllZmEiLCJpc3MiOiJhcHBsb2dpYyJ9","signatures":[{"protected":"eyJhbGciOiJSUzI1NiJ9","header":{"kid":"applogic"},"signature":"fzfXGi2URIe-eFGDcMZSRY34G10UDQuBFUK-1yaMMZSiwh0T9IgHKoOzVnB240f0qkZzuzu9B2hIOrEOVJEXo4sJMdUTOnIlO3oDgsmp1OpVnCBPBMFqbjXDAZqt_Aty1otTYRwfTvjrSzdjtH8VMh5q3O6I5kgTYxrEZSXKVAa0nEE3pZIrz9gJEoOYKIKzjyexyLTITO0zHxDKU-YacGIAcPWKVZGIg1Il5dyaEXK8tsDEG4EkiDnMi6RHQDirS7eMv_A9SSiBzHZ1Llo6OPXULORM8He3NuOuNEON2gQdoE5FcxcndzUl9jj0zAGgqjJTUjEyzguQnxapZnmXBw"}]}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Content-Type:
+      - application/json
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - b945771b-220a-41cf-984a-18fc1c1b76d3
+      X-Runtime:
+      - '0.007628'
+      Content-Length:
+      - '31'
+    body:
+      encoding: UTF-8
+      string: '{"error":"OTP code is invalid"}'
+    http_version: 
+  recorded_at: Tue, 19 Jun 2018 15:47:25 GMT
+- request:
+    method: post
+    uri: http://peatio.io:5000/management_api/v1/withdraws/new
+    body:
+      encoding: UTF-8
+      string: '{"error":"OTP code is invalid"}'
+    headers:
+      User-Agent:
+      - Faraday v0.15.0
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Content-Type:
+      - application/json
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - de00139f-1c6d-49da-b27c-c6812d7cf552
+      X-Runtime:
+      - '0.011226'
+      Content-Length:
+      - '33'
+    body:
+      encoding: UTF-8
+      string: '{"error":"Failed to verify JWT."}'
+    http_version: 
+  recorded_at: Tue, 19 Jun 2018 15:47:25 GMT
+recorded_with: VCR 4.0.0

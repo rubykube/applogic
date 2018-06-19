@@ -18,7 +18,8 @@ module Faraday
   class Response
     def assert_success!
       return self if success?
-      raise Faraday::Error, describe
+      Rails.logger.debug { describe }
+      raise Faraday::Error, [status, env.body]
     end
 
     def describe
