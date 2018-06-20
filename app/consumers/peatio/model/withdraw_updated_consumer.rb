@@ -4,7 +4,7 @@ module Peatio
   module Model
     class WithdrawUpdatedConsumer
       def call(event)
-        record = event.dig(:event, :record)
+        record = event.dig(:record)
         transaction = OpenStruct.new(
           id: record[:tid],
           email: record[:email],

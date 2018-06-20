@@ -1,14 +1,6 @@
-<% content_for :title do %>
-  Withdrawal Confirmation
-<% end %>
-<% content_for :text_1 do %>
-  <p>
-    Your withdrawal of <span id='transaction-amount'><%= @transaction.amount %> <%= @transaction.amount_currency %></span> to <span id='transaction-address'><%= @transaction.address %></span> has been sent to your account. You paid <span id='transaction-fee'><%= @transaction.fee %></span>.
-  </p>
-<% end %>
-<% content_for :button do %>
-  <%= link_to 'View This Transaction', '#' %>
-<% end %>
-<% content_for :text_2 do %>
-  <p>If you did not make this request, please <a href='#'>contact us</a> immediately.</p>
-<% end %>
+<p>Withdrawal Confirmation</p>
+<p>
+  Your withdrawal of <span><%= @transaction.amount %> <%= @transaction.amount_currency %></span> to <span><%= @transaction.address %></span> has been sent to your account. You paid <span><%= @transaction.fee %></span>.
+</p>
+<%= link_to 'View This Transaction', '#' %>
+<p>If you did not make this request, please <a href='#'>contact us</a> immediately.</p>

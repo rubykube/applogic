@@ -4,7 +4,7 @@ module Peatio
   module Model
     class DepositUpdatedConsumer
       def call(event)
-        record = event.dig(:event, :record)
+        record = event.dig(:record)
         user = User.find_by(uid: record[:uid])
         transaction = OpenStruct.new(
           id: record[:tid],
