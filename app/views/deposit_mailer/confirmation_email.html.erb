@@ -1,0 +1,14 @@
+<% content_for :title do %>
+  Deposit Confirmation
+<% end %>
+<% content_for :text_1 do %>
+  <p>
+    We have received your deposit of <span id='transaction-amount'><%= @transaction.amount %> <%= @transaction.amount_currency %></span> and have credited your account.
+  </p>
+<% end %>
+<% content_for :button do %>
+  <%= link_to 'View This Transaction', '#' %>
+<% end %>
+<% content_for :text_2 do %>
+  <p>If you did not make this request, please <a href='#'>contact us</a> immediately.</p>
+<% end %>
