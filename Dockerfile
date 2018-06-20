@@ -17,7 +17,8 @@ RUN groupadd -r app --gid=1000 \
 WORKDIR $APP_HOME
 
 # Install dependencies defined in Gemfile.
-COPY --chown=app Gemfile Gemfile.lock $APP_HOME/
+COPY Gemfile Gemfile.lock $APP_HOME/
+RUN chown -R app:app $APP_HOME
 
 RUN mkdir -p /opt/vendor/bundle \
  && chown -R app:app /opt/vendor \
