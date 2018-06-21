@@ -19,11 +19,11 @@ RSpec.describe Barong::Model::AccountCreatedConsumer do
     subject(:call) { described_class.call(event) }
 
     before do
-      allow(BarongMailer).to receive_message_chain(:verification_email, :deliver_now)
+      allow(AccountMailer).to receive_message_chain(:verification_email, :deliver_now)
     end
 
     it 'triggers the verification email mailer' do
-      expect(BarongMailer).to receive(:verification_email)
+      expect(AccountMailer).to receive(:verification_email)
         .with('email@example.com', 'n1Ytj6Hy57YpfueA2vtmnwJQs583bpYn7Wsfr')
       call
     end

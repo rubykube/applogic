@@ -6,7 +6,7 @@ module Barong
       def call(event)
         token = event[:record][:confirmation_token]
         email = event[:record][:email]
-        BarongMailer.verification_email(email, token).deliver_now
+        AccountMailer.verification_email(email, token).deliver_now
       end
 
       class << self
