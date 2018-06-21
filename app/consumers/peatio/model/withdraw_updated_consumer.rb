@@ -6,8 +6,8 @@ module Peatio
       def call(event)
         record = event.dig(:record)
         transaction = OpenStruct.new(
-          id: record[:tid],
           email: record[:email],
+          id: record[:tid],
           address: record[:rid],
           amount_currency: record[:currency],
           amount: record[:amount],
