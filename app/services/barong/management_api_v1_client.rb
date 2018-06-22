@@ -11,5 +11,11 @@ module Barong
       params = request_params.slice(:account_uid, :otp_code, :jwt)
       request(:post, '/otp/sign', params)
     end
+
+    def read_accounts(request_params = {})
+      self.action = :read_accounts
+      params = request_params.slice(:uid)
+      request(:post, '/accounts/get', params)
+    end
   end
 end
