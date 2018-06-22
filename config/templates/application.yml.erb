@@ -84,8 +84,9 @@ defaults: &defaults
 
   # Default mails sender settings.
   SENDER_EMAIL:                    ~
-  EMAIL_CONFIRMATION_URL_TEMPLATE: 'http://barong.io:4000/accounts/confirmation?confirmation_token=#{token}' # Mandatory.
-  PASSWORD_RESET_URL_TEMPLATE:     'http://barong.io:4000/accounts/password/edit?reset_password_token=#{token}' # Mandatory.
+  BARONG_ACCOUNT_EMAIL_CONFIRMATION_URL_TEMPLATE: 'http://barong.io:4000/accounts/confirmation?confirmation_token=#{token}' # Mandatory.
+  BARONG_ACCOUNT_PASSWORD_RESET_URL_TEMPLATE:     'http://barong.io:4000/accounts/password/edit?reset_password_token=#{token}' # Mandatory.
+  BARONG_ACCOUNT_UNLOCK_URL_TEMPLATE:             'http://barong.io:4000/accounts/unlock?unlock_token=#{token}' # Mandatory.
 
   # Configuration variables for API CORS.
   #
