@@ -18,7 +18,8 @@ module Faraday
   class Response
     def assert_success!
       return self if success?
-      raise Faraday::Error, describe
+      Rails.logger.debug { describe }
+      raise Faraday::Error, [ status, env.body ]
     end
 
     def describe
@@ -34,15 +35,15 @@ module Faraday
        env.request_headers.to_json,
        '',
        '-- Request body --',
-       env.request_body.to_s,
+       env.request_body,
        '',
        '-- Response headers --',
        env.response_headers.to_json,
        '',
        '-- Response body --',
-       env.body.to_s,
+       env.body,
        ''
-      ].join('\n')
+     ].join("\n")
     end
   end
 end

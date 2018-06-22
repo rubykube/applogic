@@ -18,7 +18,7 @@ describe APIv1::Withdraw, type: :request do
   it 'sends CORS headers when requesting using OPTIONS' do
     reset! unless integration_session
     integration_session.send :process, 'OPTIONS', '/api/v1/withdraws'
-    expect(response).to be_success
+    expect(response).to be_successful
     check_cors(response)
   end
 
