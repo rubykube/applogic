@@ -106,7 +106,7 @@ describe APIv1::Withdraw, type: :request do
           .to_raise(StandardError)
       end
       let(:barong_response) do
-        OpenStruct.new(status: 500, body: { })
+        OpenStruct.new(status: 500, body: {})
       end
       let(:peatio_actions) do
         {
@@ -123,7 +123,7 @@ describe APIv1::Withdraw, type: :request do
 
       it 'responds with external services error message' do
         do_request
-        expect(response.status).to eq 422
+        expect(response.status).to eq 503
         expect(json_body).to eq({'error' => 'External services error'})
       end
     end
