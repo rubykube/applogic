@@ -16,8 +16,8 @@ env:
     BOT_NAME="Kite Bot"
     BOT_EMAIL=kite-bot@heliostech.fr
     DOCKERHUB_USER=peatioexchange
-    PEATIO_ROOT_URL='http://peatio.io:5000'
-    BARONG_ROOT_URL='http://barong.io:4000'
+    PEATIO_ROOT_URL='http://peatio.icu:5000'
+    BARONG_ROOT_URL='http://barong.icu:4000'
 
 services:
   - mysql

@@ -35,6 +35,7 @@ describe Peatio::Market::BtcusdOrderCreatedConsumer do
           .and_return(message_delivery)
         allow(message_delivery).to receive(:deliver_now)
 
+        pending 'Should be stubbed without VCR'
         VCR.use_cassette('btc-usd-order-created') do
           described_class.call(received_event)
         end
