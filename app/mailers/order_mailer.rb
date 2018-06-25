@@ -3,7 +3,7 @@
 class OrderMailer < ApplicationMailer
   def order_created(email, event)
     @email = email
-    @order = order
+    @order = event
 
     mail(to: @email, subject: 'New order created')
   end

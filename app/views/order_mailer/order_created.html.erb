@@ -1,5 +1,14 @@
 <p> Hello <%= @email %>!</p>
 
-<p>You <%= order[:strategy].to_s.capitalize %> Order:</p>
+<p>You <%= @order[:strategy].to_s.capitalize %> Order:</p>
 
-<p></p>
+<p>
+  <%= "#{@order[:type]} \
+       #{@order[:initial_income_amount]} \
+       #{@order[:income_unit].to_s.upcase} for \
+       #{@order[:initial_outcome_amount]}
+       #{@order[:outcome_unit].to_s.upcase} (\
+       #{@order[:price]} \
+       #{@order[:outcome_unit].to_s.upcase} per \
+       #{@order[:income_unit].to_s.upcase})." %>
+</p>
