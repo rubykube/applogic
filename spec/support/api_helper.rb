@@ -7,18 +7,6 @@ module APITestHelpers
     JSON.parse(response.body)
   end
 
-  def post_json(destination, body, headers = {})
-    post destination,
-         String === body ? body : body.to_json,
-         headers.reverse_merge('Content-Type' => 'application/json')
-  end
-
-  def put_json(destination, body, headers = {})
-    put destination,
-        String === body ? body : body.to_json,
-        headers.reverse_merge('Content-Type' => 'application/json')
-  end
-
   def api_request(method, url, options = {})
     headers = options.fetch(:headers, {})
     params  = options.fetch(:params, {})
@@ -32,6 +20,10 @@ module APITestHelpers
 
   def api_post(*args)
     api_request(:post, *args)
+  end
+
+  def api_patch(*args)
+    api_request(:patch, *args)
   end
 
   def api_delete(*args)

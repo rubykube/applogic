@@ -12,6 +12,7 @@ Metrics/BlockLength:
     - 'config/**/*.rb'
     - 'db/migrate/*.rb'
     - 'lib/tasks/*.rake'
+  ExcludedMethods: ['describe', 'context', 'namespace', 'resource']
 Metrics/MethodLength:
   Max: 15
   Exclude:
@@ -41,4 +42,3 @@ Style/ConditionalAssignment:
   Enabled: false
 Style/NumericLiterals:
   Enabled: false
-
