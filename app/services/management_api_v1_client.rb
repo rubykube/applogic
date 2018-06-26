@@ -19,11 +19,12 @@ class ManagementAPIv1Client
     end
 
     request_parameters = generate_jwt(payload(request_parameters)) unless options[:jwt]
-
     http_client
       .public_send(request_method, build_path(request_path), request_parameters)
       .assert_success!
-      .tap { raise ManagementAPIv1Exception response unless response.success? }
+      .tap do |response|
+        raise ManagementAPIv1Exception, response unless response.success?
+      end
   end
 
   def build_path(path)
