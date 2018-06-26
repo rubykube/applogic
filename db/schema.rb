@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180518161358) do
+ActiveRecord::Schema.define(version: 2018_06_26_131054) do
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "trade_descriptors", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "trade_id", null: false
+    t.string "uid", limit: 14, null: false
+    t.string "state", limit: 30, default: "visible", null: false
+    t.index ["state", "uid", "trade_id"], name: "index_trade_descriptors_on_state_and_uid_and_trade_id"
+  end
+
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", null: false
     t.string "uid", limit: 14, null: false
     t.integer "level", limit: 1, default: 0, null: false

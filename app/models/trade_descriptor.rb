@@ -1,0 +1,3 @@
+class TradeDescriptor < ApplicationRecord
+
+end

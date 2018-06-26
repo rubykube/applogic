@@ -34,6 +34,10 @@ module APITestHelpers
     api_request(:post, *args)
   end
 
+  def api_put(*args)
+    api_request(:put, *args)
+  end
+
   def api_delete(*args)
     api_request(:delete, *args)
   end

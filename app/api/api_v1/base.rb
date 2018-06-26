@@ -10,6 +10,8 @@ module APIv1
 
     use APIv1::CORS::Middleware
     use APIv1::Auth::Middleware
+    mount APIv1::TradeDescriptor
+    mount APIv1::Trade
 
     mount APIv1::Withdraw
 
