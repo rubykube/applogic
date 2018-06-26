@@ -50,17 +50,16 @@ describe APIv1::Withdraw, type: :request do
     context 'when action doesn\'t require barong totp' do
       before do
         stub_request(:post, "#{ENV.fetch('BARONG_ROOT_URL')}/management_api/v1/otp/sign")
-            .to_raise(StandardError)
+            .to_raise(Faraday::Error)
       end
 
       it 'doesn\'t send request to barong' do
-        expect{ do_request }.to_not raise_error(StandardError)
+        expect{ do_request }.to_not raise_error
       end
 
       it 'sends withdrawal request to peatio' do
-       # binding.pry
         do_request
-        expect(response.status).to eq 200
+        expect(response.status).to eq 201
         expect(json_body).to eq peatio_response.body
       end
     end
@@ -77,104 +76,72 @@ describe APIv1::Withdraw, type: :request do
 
       it 'sends withdrawal request to peatio and barong' do
         do_request
-        expect(response.status).to eq 200
+        expect(response.status).to eq 201
         expect(json_body).to eq peatio_response.body
       end
-    end
 
-    context 'when barong responds with errors' do
-      before do
-        stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
-          .to_raise(StandardError)
-      end
-      let(:barong_response) do
-        OpenStruct.new(status: 422, body: { error: 'OTP code is invalid' })
-      end
-      let(:peatio_actions) do
-        {
-          write_withdraws: {
-            required_signatures: %i[applogic],
-            requires_barong_totp: true
-          }
-        }
-      end
+      context 'when barong responds with errors' do
+        before do
+          stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
+              .to_raise(Faraday::Error)
+        end
+        let(:barong_response) do
+          OpenStruct.new(status: 422, body: { error: 'OTP code is invalid' })
+        end
 
-      it 'doesn\'t send request to peatio' do
-        expect{ do_request }.to_not raise_error(StandardError)
+        it 'doesn\'t send request to peatio' do
+          expect{ do_request }.to_not raise_error
+        end
+
+        it 'responds with barong error message' do
+          do_request
+          expect(response.status).to eq 422
+          expect(json_body).to eq JSON.parse(barong_response.body.to_json)
+        end
       end
 
-      it 'responds with barong error message' do
-        do_request
-        expect(response.status).to eq 422
-        expect(json_body).to eq JSON.parse(barong_response.body.to_json)
-      end
-    end
+      context 'when barong responds with internal server error' do
+        before do
+          stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
+              .to_raise(Faraday::Error)
+        end
+        let(:barong_response) do
+          OpenStruct.new(status: 500, body: {})
+        end
 
-    context 'when barong responds with internal server error' do
-      before do
-        stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
-          .to_raise(StandardError)
-      end
-      let(:barong_response) do
-        OpenStruct.new(status: 500, body: {})
-      end
-      let(:peatio_actions) do
-        {
-          write_withdraws: {
-            required_signatures: %i[applogic],
-            requires_barong_totp: true
-          }
-        }
+        it 'doesn\'t send request to peatio' do
+          expect{ do_request }.to_not raise_error
+        end
+
+        it 'responds with external services error message' do
+          do_request
+          expect(response.status).to eq 503
+          expect(json_body).to eq({'error' => 'External services error'})
+        end
       end
 
-      it 'doesn\'t send request to peatio' do
-        expect{ do_request }.to_not raise_error(StandardError)
+      context 'when peatio responds with errors' do
+        let(:peatio_response) do
+          OpenStruct.new(status: 422, body: { error: 'Cannot unlock funds (amount: 10).' })
+        end
+
+        it 'responds with peatio error message' do
+          do_request
+          expect(response.status).to eq 422
+          expect(json_body).to eq JSON.parse(peatio_response.body.to_json)
+        end
       end
 
-      it 'responds with external services error message' do
-        do_request
-        expect(response.status).to eq 503
-        expect(json_body).to eq({'error' => 'External services error'})
-      end
-    end
+      context 'when peatio responds with internal server error' do
+        let(:barong_response) do
+          OpenStruct.new(status: 500, body: {})
+        end
 
-    context 'when peatio responds with errors' do
-      let(:peatio_response) do
-        OpenStruct.new(status: 422, body: { error: 'Insufficient balance' })
-      end
-      let(:peatio_actions) do
-        {
-            write_withdraws: {
-                required_signatures: %i[applogic],
-                requires_barong_totp: true
-            }
-        }
-      end
-
-      it 'responds with peatio error message' do
-        do_request
-        expect(response.status).to eq 422
-        expect(json_body).to eq JSON.parse(peatio_response.body.to_json)
-      end
-    end
-
-    context 'when peatio responds with internal server error' do
-      let(:barong_response) do
-        OpenStruct.new(status: 500, body: {})
-      end
-      let(:peatio_actions) do
-        {
-            write_withdraws: {
-                required_signatures: %i[applogic],
-                requires_barong_totp: true
-            }
-        }
-      end
-
-      it 'responds with external services error message' do
-        do_request
-        expect(response.status).to eq 503
-        expect(json_body).to eq({'error' => 'External services error'})
+        it 'responds with external services error message' do
+          do_request
+          expect(response.status).to eq 503
+          expect(json_body).to eq({'error' => 'External services error'})
+        end
       end
     end
   end
