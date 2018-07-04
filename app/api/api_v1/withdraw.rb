@@ -20,7 +20,7 @@ module APIv1
                desc: 'The beneficiary ID or wallet address on the Blockchain.'
     end
     post '/withdraws' do
-      Peatio::ManagementAPIv1Client.new.create_withdraw(
+      Peatio::ManagementAPIv1::Client.new.create_withdraw(
         uid:      env['api.v1.authenticated_uid'],
         currency: params[:currency],
         amount:   params[:amount],
