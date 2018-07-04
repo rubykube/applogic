@@ -45,5 +45,9 @@ module Faraday
        ''
      ].join("\n")
     end
+
+    def server_error?
+      status.in?(500...600)
+    end
   end
 end
