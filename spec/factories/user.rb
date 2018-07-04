@@ -5,7 +5,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
     level 0
     state 'active'
-    uid { Faker::Internet.password(14, 14) }
+    uid { "ID#{SecureRandom.hex(5).upcase}" }
   end
 
   trait :level_3 do
