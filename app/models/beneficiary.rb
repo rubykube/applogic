@@ -13,7 +13,7 @@ class Beneficiary < ApplicationRecord
   validates :account_type, inclusion: { in: ACCOUNT_TYPES }
 
   scope :by_current_user, -> (user) { where(uid: user.uid) }
-  scope :active, -> { where(status: 'active') }
+  scope :active, -> { where(status: 'approved') }
   validate :validate_iban, if: proc { |m| m.account_type == 'iban' }
   validate :validate_is_not_iban, if: proc { |m| m.account_type != 'iban' }
   validates :bank_swift_code, presence: true, if: proc { |m| m.account_type == 'swift' }
