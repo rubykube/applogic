@@ -43,8 +43,38 @@ describe APIv1::Withdraw, type: :request do
         currency: 'BTC',
         amount: 0.2,
         otp: '1234',
-        rid: '123'
+        rid: '123',
+        currency_type: 'coin'
       }
+    end
+
+    context 'fiat withdrawal' do
+      let!(:beneficiary) { create(:beneficiary, status: 'approved', uid: user.uid) }
+      let(:params) do
+        {
+          currency: 'USD',
+          amount: 10,
+          otp: '1234',
+          rid: beneficiary.rid,
+          currency_type: 'fiat'
+        }
+      end
+
+      it 'sends withdrawal request to peatio and barong' do
+        do_request
+        expect(response.status).to eq 201
+        expect(json_body).to eq peatio_response.body
+      end
+
+      context 'when rid is invalid' do
+        it 'sends withdrawal request to peatio and barong' do
+          params[:rid] = 'RID111111'
+
+          do_request
+          expect(response.status).to eq 404
+          expect(json_body).to eq('error' => 'Beneficiary is not found')
+        end
+      end
     end
 
     context 'when action doesn\'t require barong totp' do
