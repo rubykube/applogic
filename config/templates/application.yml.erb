@@ -1,5 +1,9 @@
 defaults: &defaults
 
+  # Host settings
+  URL_HOST: <%= @vars['peatio']['host'] %>
+  URL_SCHEME: https
+
   # Configuration variables for JWT verification.
   # Get explanation at https://en.wikipedia.org/wiki/JSON_Web_Token.
   #
@@ -85,6 +89,11 @@ defaults: &defaults
   # Default mails sender settings.
   SENDER_EMAIL:                    ~
   EMAIL_CONFIRMATION_URL_TEMPLATE: 'http://barong:3000/accounts/confirmation?confirmation_token=#{token}' # Mandatory.
+
+  # SMTP configuration
+  SMTP_ADDRESS: localhost
+  SMTP_PORT: '25'
+  SMTP_DOMAIN: localhost.local
 
   # Configuration variables for API CORS.
   #
