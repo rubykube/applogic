@@ -23,11 +23,11 @@ module ManagementAPIv1
       begin
         http_client
           .public_send(request_method, build_path(request_path), request_parameters)
-          .tap { |response| raise ManagementAPIv1Exception, response unless response.success? }
+          .tap { |response| raise ManagementAPIv1::Exception, response unless response.success? }
           .assert_success!
           .body
       rescue Faraday::Error
-        raise ManagementAPIv1Exception
+        raise ManagementAPIv1::Exception
       end
     end
 
