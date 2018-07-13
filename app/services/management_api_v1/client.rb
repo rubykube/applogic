@@ -20,12 +20,15 @@ module ManagementAPIv1
       end
 
       request_parameters = generate_jwt(payload(request_parameters)) unless options[:jwt]
-
-      http_client
-        .public_send(request_method, build_path(request_path), request_parameters)
-        .tap { |response| raise ManagementAPIv1Exception, response unless response.success? }
-        .assert_success!
-        .body
+      begin
+        http_client
+          .public_send(request_method, build_path(request_path), request_parameters)
+          .tap { |response| raise ManagementAPIv1::Exception, response unless response.success? }
+          .assert_success!
+          .body
+      rescue Faraday::Error
+        raise ManagementAPIv1::Exception
+      end
     end
 
     def build_path(path)
@@ -36,7 +39,6 @@ module ManagementAPIv1
       Faraday.new(url: @root_api_url) do |conn|
         conn.request :json
         conn.response :json
-        conn.use ExceptionsMiddleware
         conn.adapter Faraday.default_adapter
       end
     end
