@@ -15,7 +15,7 @@ class BaseAPI < Grape::API
   logger.formatter = GrapeLogging::Formatters::Rails.new
   use GrapeLogging::Middleware::RequestLogger,
       logger:    logger,
-      log_level: :info,
+      log_level: ENV.fetch('LOG_LEVEL', :info),
       include:   [GrapeLogging::Loggers::Response.new,
                   GrapeLogging::Loggers::FilterParameters.new,
                   GrapeLogging::Loggers::ClientEnv.new,
