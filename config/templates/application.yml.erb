@@ -94,6 +94,9 @@ defaults: &defaults
   API_CORS_ORIGINS:           '*'
   API_CORS_ALLOW_CREDENTIALS: ~
 
+  # Configuration variables for logger.
+  LOG_LEVEL: ~ # Default level for production is warn.
+
 development:
   <<: *defaults
 
