@@ -20,10 +20,10 @@ module APIv1
                desc: 'The beneficiary ID or wallet address on the Blockchain.'
     end
     post '/withdraws' do
-      currency = Peatio::MemberApiV2::Client.new.get_currency(params[:currency])
+      currency = Peatio::MemberAPIv2::Client.new.get_currency(params[:currency])
       if currency['type'] == 'fiat' &&
          !Beneficiary.active.where(uid: env['api.v1.authenticated_uid'], rid: params[:rid]).exists?
-        error!('Beneficiary is not found', 404)
+        error!('Beneficiary is not found', 422)
       end
 
       Peatio::ManagementAPIv1::Client.new.create_withdraw(

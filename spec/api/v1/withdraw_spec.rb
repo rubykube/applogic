@@ -27,11 +27,11 @@ describe APIv1::Withdraw, type: :request do
         .to_return(status: barong_response.status,
                    body: barong_response.body.to_json.to_s,
                    headers: {})
-      stub_request(:get, "#{ENV.fetch('PEATIO_ROOT_URL')}/api/v2/currencies/BTC")
+      stub_request(:get, "#{ENV.fetch('PEATIO_ROOT_URL')}/api/v2/currencies/btc")
           .to_return(status: peatio_coin_response.status,
                      body: peatio_coin_response.body.to_json.to_s,
                      headers: {})
-      stub_request(:get, "#{ENV.fetch('PEATIO_ROOT_URL')}/api/v2/currencies/USD")
+      stub_request(:get, "#{ENV.fetch('PEATIO_ROOT_URL')}/api/v2/currencies/usd")
           .to_return(status: peatio_fiat_response.status,
                      body: peatio_fiat_response.body.to_json.to_s,
                      headers: {})
@@ -54,7 +54,7 @@ describe APIv1::Withdraw, type: :request do
     end
     let(:params) do
       {
-        currency: 'BTC',
+        currency: 'btc',
         amount: 0.2,
         otp: '1234',
         rid: '123',
@@ -65,7 +65,7 @@ describe APIv1::Withdraw, type: :request do
       let!(:beneficiary) { create(:beneficiary, status: 'approved', uid: user.uid) }
       let(:params) do
         {
-          currency: 'USD',
+          currency: 'usd',
           amount: 10,
           otp: '1234',
           rid: beneficiary.rid,
@@ -83,7 +83,7 @@ describe APIv1::Withdraw, type: :request do
           params[:rid] = 'RID111111'
 
           do_request
-          expect(response.status).to eq 404
+          expect(response.status).to eq 422
           expect(json_body).to eq('error' => 'Beneficiary is not found')
         end
       end
