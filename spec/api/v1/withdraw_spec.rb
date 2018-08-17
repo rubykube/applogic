@@ -27,6 +27,14 @@ describe APIv1::Withdraw, type: :request do
         .to_return(status: barong_response.status,
                    body: barong_response.body.to_json.to_s,
                    headers: {})
+      stub_request(:get, "#{ENV.fetch('PEATIO_ROOT_URL')}/api/v2/currencies/btc")
+          .to_return(status: peatio_coin_response.status,
+                     body: peatio_coin_response.body.to_json.to_s,
+                     headers: {})
+      stub_request(:get, "#{ENV.fetch('PEATIO_ROOT_URL')}/api/v2/currencies/usd")
+          .to_return(status: peatio_fiat_response.status,
+                     body: peatio_fiat_response.body.to_json.to_s,
+                     headers: {})
     end
     let(:peatio_response) do
       OpenStruct.new(status: 200, body: { 'foo' => 'bar' })
@@ -34,17 +42,22 @@ describe APIv1::Withdraw, type: :request do
     let(:barong_response) do
       OpenStruct.new(status: 200, body: { 'foo' => 'bar' })
     end
+    let(:peatio_coin_response) do
+      OpenStruct.new(status: 200, body: { 'type' => 'coin' })
+    end
+    let(:peatio_fiat_response) do
+      OpenStruct.new(status: 200, body: { 'type' => 'fiat' })
+    end
 
     let(:do_request) do
       api_post '/api/v1/withdraws', token: token, params: params
     end
     let(:params) do
       {
-        currency: 'BTC',
+        currency: 'btc',
         amount: 0.2,
         otp: '1234',
         rid: '123',
-        currency_type: 'coin'
       }
     end
 
@@ -52,11 +65,10 @@ describe APIv1::Withdraw, type: :request do
       let!(:beneficiary) { create(:beneficiary, status: 'approved', uid: user.uid) }
       let(:params) do
         {
-          currency: 'USD',
+          currency: 'usd',
           amount: 10,
           otp: '1234',
           rid: beneficiary.rid,
-          currency_type: 'fiat'
         }
       end
 
@@ -71,7 +83,7 @@ describe APIv1::Withdraw, type: :request do
           params[:rid] = 'RID111111'
 
           do_request
-          expect(response.status).to eq 404
+          expect(response.status).to eq 422
           expect(json_body).to eq('error' => 'Beneficiary is not found')
         end
       end
