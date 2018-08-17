@@ -10,7 +10,6 @@ module Peatio
         if response_or_ex.respond_to?(:body)
           @status = 422 unless response_or_ex.server_error?
           super response_or_ex.body.dig('error', 'message') || 'External service error'
-          binding.pry
         else
           super response_or_ex
         end
