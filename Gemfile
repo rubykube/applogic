@@ -21,6 +21,7 @@ gem 'validates_lengths_from_database',  '~> 0.7.0'
 gem 'faraday',                          '~> 0.15.0'
 gem 'faraday_middleware',               '~> 0.12'
 gem 'iban-tools',                       '~> 1.1'
+gem 'peatio',                           '~>0.4'
 
 group :development, :test do
   gem 'faker',      '~> 1.8'

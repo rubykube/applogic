@@ -5,7 +5,7 @@ module APIv1
     extend Memoist
 
     def authenticate!
-      current_user || raise(AuthorizationError)
+      current_user or raise Peatio::Auth::Error 
     end
 
     def current_user

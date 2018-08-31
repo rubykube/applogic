@@ -35,22 +35,17 @@ describe APIv1::Auth::JWTAuthenticator do
 
   it 'should raise exception when uid is not provided' do
     payload.delete(:uid)
-    expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /key not found: :uid/ }
+    expect { subject.authenticate! }.to raise_error(Peatio::Auth::Error) { |e| expect(e.reason).to match /key not found: :uid/ }
   end
 
   it 'should raise exception when uid is blank' do
     payload[:uid] = ''
-    expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /blank/ }
+    expect { subject.authenticate! }.to raise_error(Peatio::Auth::Error) { |e| expect(e.reason).to match /blank/ }
   end
 
   it 'should raise exception when token is expired' do
     payload[:exp] = 1.minute.ago.to_i
-    expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /expired/ }
-  end
-
-  it 'should raise exception when token type is invalid' do
-    subject.instance_variable_set(:@token_type, 'Foo')
-    expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /invalid/ }
+    expect { subject.authenticate! }.to raise_error(Peatio::Auth::Error) { |e| expect(e.reason).to match /failed to decode and verify jwt/i }
   end
 
   describe 'exception-safe authentication' do
@@ -72,57 +67,6 @@ describe APIv1::Auth::JWTAuthenticator do
     end
   end
 
-  context 'valid issuer' do
-    before { ENV['JWT_ISSUER'] = 'qux' }
-    before { payload[:iss] = 'qux' }
-    after  { ENV.delete('JWT_ISSUER') }
-    it('should validate issuer') { expect(subject.authenticate!).to eq user.uid }
-  end
-
-  context 'invalid issuer' do
-    before { ENV['JWT_ISSUER'] = 'qux' }
-    before { payload[:iss] = 'hacker' }
-    after  { ENV.delete('JWT_ISSUER') }
-    it 'should validate issuer' do
-      expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /issuer/ }
-    end
-  end
-
-  context 'valid audience' do
-    before { ENV['JWT_AUDIENCE'] = 'foo,bar' }
-    before { payload[:aud] = ['bar'] }
-    after  { ENV.delete('JWT_AUDIENCE') }
-    it('should validate audience') { expect(subject.authenticate!).to eq user.uid }
-  end
-
-  context 'invalid audience' do
-    before { ENV['JWT_AUDIENCE'] = 'foo,bar' }
-    before { payload[:aud] = ['baz'] }
-    after  { ENV.delete('JWT_AUDIENCE') }
-    it 'should validate audience' do
-      expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /audience/ }
-    end
-  end
-
-  context 'missing JWT ID' do
-    before { payload[:jti] = nil }
-    it 'should require JTI' do
-      expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /jti/ }
-    end
-  end
-
-  context 'issued at in future' do
-    before { payload[:iat] = 200.seconds.from_now.to_i }
-    it 'should not allow JWT' do
-      expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /iat/ }
-    end
-  end
-
-  context 'issued at before future' do
-    before { payload[:iat] = 3.seconds.ago.to_i }
-    it('should allow JWT') { expect(subject.authenticate!).to eq user.uid }
-  end
-
   describe 'on the fly registration' do
     context 'token not issued by Barong' do
       before { payload[:iss] = 'someone' }
@@ -136,27 +80,27 @@ describe APIv1::Auth::JWTAuthenticator do
 
       it 'should require level to be present in payload' do
         payload.merge!(state: 'pending', uid: Faker::Internet.password(14, 14), email: Faker::Internet.email)
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /key not found: :level/ }
+        expect { subject.authenticate! }.to raise_error(Peatio::Auth::Error) { |e| expect(e.reason).to match /key not found: :level/ }
       end
 
       it 'should require state to be present in payload' do
         payload.merge!(level: 1, uid: Faker::Internet.password(14, 14), email: Faker::Internet.email)
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /key not found: :state/ }
+        expect { subject.authenticate! }.to raise_error(Peatio::Auth::Error) { |e| expect(e.reason).to match /key not found: :state/ }
       end
 
       it 'should require UID to be present in payload' do
         payload.merge!(level: 1, state: 'disabled', email: Faker::Internet.email).delete(:uid)
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /key not found: :uid/ }
+        expect { subject.authenticate! }.to raise_error(Peatio::Auth::Error) { |e| expect(e.reason).to match /key not found: :uid/ }
       end
 
       it 'should require UID to be not blank' do
         payload.merge!(level: 1, state: 'disabled', email: Faker::Internet.email, uid: ' ')
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /UID is blank/ }
+        expect { subject.authenticate! }.to raise_error(Peatio::Auth::Error) { |e| expect(e.reason).to match /UID is blank/ }
       end
 
       it 'should raise exception when email is invalid' do
         payload[:email] = '@gmail.com'
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /invalid/ }
+        expect { subject.authenticate! }.to raise_error(Peatio::Auth::Error) { |e| expect(e.reason).to match /invalid/ }
       end
 
       it 'should register user' do
