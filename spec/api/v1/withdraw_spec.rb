@@ -80,11 +80,11 @@ describe APIv1::Withdraw, type: :request do
     context 'when action doesn\'t require barong totp' do
       before do
         stub_request(:post, "#{ENV.fetch('BARONG_ROOT_URL')}/management_api/v1/otp/sign")
-            .to_raise(Faraday::Error)
+          .to_raise(Faraday::Error)
       end
 
       it 'doesn\'t send request to barong' do
-        expect{ do_request }.to_not raise_error
+        expect { do_request }.to_not raise_error
       end
 
       it 'sends withdrawal request to peatio' do
@@ -113,14 +113,14 @@ describe APIv1::Withdraw, type: :request do
       context 'when barong responds with errors' do
         before do
           stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
-              .to_raise(Faraday::Error)
+            .to_raise(Faraday::Error)
         end
         let(:barong_response) do
           OpenStruct.new(status: 422, body: { error: 'OTP code is invalid' })
         end
 
         it 'doesn\'t send request to peatio' do
-          expect{ do_request }.to_not raise_error
+          expect { do_request }.to_not raise_error
         end
 
         it 'responds with barong error message' do
@@ -133,20 +133,22 @@ describe APIv1::Withdraw, type: :request do
       context 'when barong responds with internal server error' do
         before do
           stub_request(:post, "#{ENV.fetch('PEATIO_ROOT_URL')}/management_api/v1/withdraws/new")
-              .to_raise(Faraday::Error)
+            .to_raise(Faraday::Error)
         end
         let(:barong_response) do
           OpenStruct.new(status: 500, body: {})
         end
 
         it 'doesn\'t send request to peatio' do
-          expect{ do_request }.to_not raise_error
+          expect { do_request }.to_not raise_error
         end
 
         it 'responds with external services error message' do
           do_request
           expect(response.status).to eq 503
-          expect(json_body).to eq({'error' => 'External services error'})
+          # rubocop:disable Style/BracesAroundHashParameters
+          expect(json_body).to eq({ 'error' => 'External services error' })
+          # rubocop:enable Style/BracesAroundHashParameters
         end
       end
 
@@ -170,7 +172,9 @@ describe APIv1::Withdraw, type: :request do
         it 'responds with external services error message' do
           do_request
           expect(response.status).to eq 503
-          expect(json_body).to eq({'error' => 'External services error'})
+          # rubocop:disable Style/BracesAroundHashParameters
+          expect(json_body).to eq({ 'error' => 'External services error' })
+          # rubocop:enable Style/BracesAroundHashParameters
         end
       end
     end

@@ -4,7 +4,8 @@ module Barong
   module ManagementAPIv1
     class Client < ::ManagementAPIv1::Client
       def initialize(*)
-        super ENV.fetch('BARONG_ROOT_URL'), Rails.configuration.x.barong_management_api_v1_configuration
+        super ENV.fetch('BARONG_ROOT_URL'),
+              Rails.configuration.x.barong_management_api_v1_configuration
       end
 
       def otp_sign(request_params = {})

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Beneficiary < ApplicationRecord
-  STATUSES = %w[approved invalid declined pending]
-  ACCOUNT_TYPES = %w[swift iban]
+  STATUSES = %w[approved invalid declined pending].freeze
+  ACCOUNT_TYPES = %w[swift iban].freeze
 
   before_validation :assign_rid
 
@@ -12,7 +12,7 @@ class Beneficiary < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
   validates :account_type, inclusion: { in: ACCOUNT_TYPES }
 
-  scope :by_current_user, -> (user) { where(uid: user.uid) }
+  scope :by_current_user, ->(user) { where(uid: user.uid) }
   scope :active, -> { where(status: 'approved') }
   validate :validate_iban, if: proc { |m| m.account_type == 'iban' }
   validate :validate_is_not_iban, if: proc { |m| m.account_type != 'iban' }

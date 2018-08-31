@@ -13,6 +13,7 @@ module ManagementAPIv1
       @security_configuration = security_configuration
     end
 
+    # rubocop:disable Metrics/AbcSize
     def request(request_method, request_path, request_parameters, options = {})
       options = { jwt: false }.merge(options)
       unless request_method.in?(%i[post put])
@@ -27,6 +28,7 @@ module ManagementAPIv1
         .assert_success!
         .body
     end
+    # rubocop:enable Metrics/AbcSize
 
     def build_path(path)
       "management_api/v1/#{path}"

@@ -18,8 +18,10 @@ def report_exception_to_screen(exception)
   Rails.logger.unknown { exception.backtrace.join("\n") if exception.respond_to?(:backtrace) }
 end
 
+# rubocop:disable Style/RescueStandardError
 def report_exception_to_ets(exception)
   Raven.capture_exception(exception) if defined?(Raven)
 rescue => ets_exception
   report_exception(ets_exception, false)
 end
+# rubocop:enable Style/RescueStandardError

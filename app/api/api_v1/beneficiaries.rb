@@ -6,28 +6,25 @@ module APIv1
 
     resource :beneficiaries do
       desc 'List all beneficiaries for current account.',
-          failure: [
-            { code: 401, message: 'Invalid bearer token' }
-          ]
+           failure: [{ code: 401, message: 'Invalid bearer token' }]
       get do
         present Beneficiary.by_current_user(current_user),
                 with: APIv1::Entities::Beneficiary
       end
 
       desc 'Return a beneficiary by rid',
-        failure: [
-          { code: 400, message: 'Required params are empty' },
-          { code: 401, message: 'Invalid bearer token' },
-          { code: 404, message: 'Beneficiary is not found' }
-        ]
+           failure: [
+             { code: 400, message: 'Required params are empty' },
+             { code: 401, message: 'Invalid bearer token' },
+             { code: 404, message: 'Beneficiary is not found' }
+           ]
       params do
         requires :rid, type: String, allow_blank: false
       end
       get ':rid' do
         beneficiary = Beneficiary.by_current_user(current_user)
                                  .find_by!(rid: params[:rid])
-        present beneficiary,
-                with: APIv1::Entities::Beneficiary
+        present beneficiary, with: APIv1::Entities::Beneficiary
       end
 
       desc 'Create a beneficiary',
@@ -57,8 +54,7 @@ module APIv1
         beneficiary = Beneficiary.create(declared_params.merge(uid: current_user.uid))
         error!(beneficiary.errors.as_json, 422) if beneficiary.errors.any?
 
-        present beneficiary,
-                with: APIv1::Entities::Beneficiary
+        present beneficiary, with: APIv1::Entities::Beneficiary
       end
 
       desc 'Updates a beneficiary',
@@ -89,12 +85,9 @@ module APIv1
         declared_params = declared(params, include_missing: false)
         beneficiary = Beneficiary.by_current_user(current_user)
                                  .find_by!(rid: params[:rid])
-        unless beneficiary.update(declared_params)
-          error!(beneficiary.errors.as_json, 422)
-        end
+        error!(beneficiary.errors.as_json, 422) unless beneficiary.update(declared_params)
 
-        present beneficiary,
-                with: APIv1::Entities::Beneficiary
+        present beneficiary, with: APIv1::Entities::Beneficiary
       end
 
       desc 'Delete a beneficiary',

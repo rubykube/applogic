@@ -12,11 +12,9 @@ describe APIv1::Auth::JWTAuthenticator do
   end
 
   let :request do
-    double 'request', \
-      request_method: 'GET',
-      path_info:      '/users/me',
-      env:            { 'api.endpoint'  => endpoint },
-      headers:        { 'Authorization' => token }
+    double 'request', request_method: 'GET', path_info: '/users/me',
+                      env: { 'api.endpoint' => endpoint },
+                      headers: { 'Authorization' => token }
   end
 
   let :user do
@@ -35,22 +33,28 @@ describe APIv1::Auth::JWTAuthenticator do
 
   it 'should raise exception when uid is not provided' do
     payload.delete(:uid)
-    expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /key not found: :uid/ }
+    expect { subject.authenticate! }
+      .to raise_error(APIv1::AuthorizationError) do |e|
+        expect(e.reason).to match(/key not found: :uid/)
+      end
   end
 
   it 'should raise exception when uid is blank' do
     payload[:uid] = ''
-    expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /blank/ }
+    expect { subject.authenticate! }
+      .to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match(/blank/) }
   end
 
   it 'should raise exception when token is expired' do
     payload[:exp] = 1.minute.ago.to_i
-    expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /expired/ }
+    expect { subject.authenticate! }
+      .to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match(/expired/) }
   end
 
   it 'should raise exception when token type is invalid' do
     subject.instance_variable_set(:@token_type, 'Foo')
-    expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /invalid/ }
+    expect { subject.authenticate! }
+      .to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match(/invalid/) }
   end
 
   describe 'exception-safe authentication' do
@@ -84,7 +88,8 @@ describe APIv1::Auth::JWTAuthenticator do
     before { payload[:iss] = 'hacker' }
     after  { ENV.delete('JWT_ISSUER') }
     it 'should validate issuer' do
-      expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /issuer/ }
+      expect { subject.authenticate! }
+        .to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match(/issuer/) }
     end
   end
 
@@ -100,21 +105,26 @@ describe APIv1::Auth::JWTAuthenticator do
     before { payload[:aud] = ['baz'] }
     after  { ENV.delete('JWT_AUDIENCE') }
     it 'should validate audience' do
-      expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /audience/ }
+      expect { subject.authenticate! }
+        .to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match(/audience/) }
     end
   end
 
   context 'missing JWT ID' do
     before { payload[:jti] = nil }
     it 'should require JTI' do
-      expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /jti/ }
+      expect { subject.authenticate! }
+        .to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match(/jti/) }
     end
   end
 
   context 'issued at in future' do
     before { payload[:iat] = 200.seconds.from_now.to_i }
     it 'should not allow JWT' do
-      expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /iat/ }
+      expect { subject.authenticate! }
+        .to raise_error(APIv1::AuthorizationError) do |e|
+          expect(e.reason).to match(/iat/)
+        end
     end
   end
 
@@ -135,32 +145,48 @@ describe APIv1::Auth::JWTAuthenticator do
       before { payload[:iss] = 'barong' }
 
       it 'should require level to be present in payload' do
-        payload.merge!(state: 'pending', uid: Faker::Internet.password(14, 14), email: Faker::Internet.email)
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /key not found: :level/ }
+        payload.merge!(state: 'pending', uid: Faker::Internet.password(14, 14),
+                       email: Faker::Internet.email)
+        expect { subject.authenticate! }
+          .to raise_error(APIv1::AuthorizationError) do |e|
+            expect(e.reason).to match(/key not found: :level/)
+          end
       end
 
       it 'should require state to be present in payload' do
-        payload.merge!(level: 1, uid: Faker::Internet.password(14, 14), email: Faker::Internet.email)
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /key not found: :state/ }
+        payload.merge!(level: 1, uid: Faker::Internet.password(14, 14),
+                       email: Faker::Internet.email)
+        expect { subject.authenticate! }
+          .to raise_error(APIv1::AuthorizationError) do |e|
+            expect(e.reason).to match(/key not found: :state/)
+          end
       end
 
       it 'should require UID to be present in payload' do
         payload.merge!(level: 1, state: 'disabled', email: Faker::Internet.email).delete(:uid)
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /key not found: :uid/ }
+        expect { subject.authenticate! }
+          .to raise_error(APIv1::AuthorizationError) do |e|
+            expect(e.reason).to match(/key not found: :uid/)
+          end
       end
 
       it 'should require UID to be not blank' do
         payload.merge!(level: 1, state: 'disabled', email: Faker::Internet.email, uid: ' ')
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /UID is blank/ }
+        expect { subject.authenticate! }
+          .to raise_error(APIv1::AuthorizationError) do |e|
+            expect(e.reason).to match(/UID is blank/)
+          end
       end
 
       it 'should raise exception when email is invalid' do
         payload[:email] = '@gmail.com'
-        expect { subject.authenticate! }.to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match /invalid/ }
+        expect { subject.authenticate! }
+          .to raise_error(APIv1::AuthorizationError) { |e| expect(e.reason).to match(/invalid/) }
       end
 
       it 'should register user' do
-        payload.merge!(email: 'guyfrombarong@email.com', uid: 'BARONG1234', state: 'active', level: 2)
+        payload.merge!(email: 'guyfrombarong@email.com', uid: 'BARONG1234',
+                       state: 'active', level: 2)
         expect { subject.authenticate! }.to change(User, :count).by(1)
         record = User.last
         expect(record.uid).to eq payload[:uid]

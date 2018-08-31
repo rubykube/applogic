@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-
 gem 'bunny',                            '~> 2.9', require: false
 gem 'email_validator',                  '~> 1.6'
+gem 'faraday',                          '~> 0.15.0'
+gem 'faraday_middleware',               '~> 0.12'
 gem 'figaro',                           '~> 1.1'
 gem 'grape',                            '~> 1.0'
-gem 'grape-swagger',                    '~> 0.29'
 gem 'grape-entity',                     '~> 0.7.1'
+gem 'grape-swagger',                    '~> 0.29'
 gem 'grape_logging',                    '~> 1.8'
+gem 'iban-tools',                       '~> 1.1'
 gem 'jwt-multisig',                     '~> 1.0'
 gem 'memoist',                          '~> 0.16'
 gem 'mini_racer',                       '~> 0.1', require: false
@@ -18,9 +20,6 @@ gem 'rails',                            '~> 5.2'
 gem 'sass-rails',                       '~> 5.0'
 gem 'uglifier',                         '~> 4.1'
 gem 'validates_lengths_from_database',  '~> 0.7.0'
-gem 'faraday',                          '~> 0.15.0'
-gem 'faraday_middleware',               '~> 0.12'
-gem 'iban-tools',                       '~> 1.1'
 
 group :development, :test do
   gem 'faker',      '~> 1.8'

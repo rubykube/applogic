@@ -34,7 +34,8 @@ describe User do
         beneficiary.account_number = 'GB82 WEST 1234 5698 7654 32'
         beneficiary.bank_swift_code = Faker::Bank.swift_bic
         beneficiary.valid?
-        expect(beneficiary.errors.messages).to eq(account_number: ['IBAN is available only for iban account type'])
+        expect(beneficiary.errors.messages)
+          .to eq(account_number: ['IBAN is available only for iban account type'])
       end
 
       it 'invalid if number is swift but bank_swift_code is missing' do

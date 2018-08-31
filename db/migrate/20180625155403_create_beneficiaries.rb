@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class CreateBeneficiaries < ActiveRecord::Migration[5.2]
+  # rubocop:disable Metrics/AbcSize
   def change
     create_table :beneficiaries do |t|
       t.string :rid, limit: 13, null: false, index: { unique: true }
@@ -22,4 +25,5 @@ class CreateBeneficiaries < ActiveRecord::Migration[5.2]
       t.timestamps null: false
     end
   end
+  # rubocop:enable Metrics/AbcSize
 end

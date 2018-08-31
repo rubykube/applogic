@@ -13,6 +13,7 @@ module APIv1
       #
       # @param [Hash] options
       # @return [String, User, NilClass]
+      # rubocop:disable Style/RescueStandardError
       def authenticate!(options = {})
         unless @token_type == 'Bearer'
           raise AuthorizationError, 'Token type is not provided or invalid.'
@@ -23,24 +24,26 @@ module APIv1
         end
       rescue => e
         report_exception(e)
-        if AuthorizationError === e
-          raise e
-        else
-          raise AuthorizationError, e.inspect
-        end
+        # rubocop:disable Style/CaseEquality
+        raise e if AuthorizationError === e
+        # rubocop:enable Style/CaseEquality
+        raise AuthorizationError, e.inspect
       end
+      # rubocop:enable Style/RescueStandardError
 
       #
       # Exception-safe version of #authenticate!.
       #
       # @return [String, User, NilClass]
+      # rubocop:disable Style/RescueStandardError
       def authenticate(*args)
         authenticate!(*args)
       rescue
         nil
       end
+      # rubocop:enable Style/RescueStandardError
 
-    private
+      private
 
       def decode_and_verify_token(token)
         JWT.decode(token, Utils.jwt_public_key, true, token_verification_options)
@@ -92,27 +95,30 @@ module APIv1
         end
       end
 
+      # rubocop:disable Metrics/AbcSize
       def token_verification_options
         { verify_expiration: true,
           verify_not_before: true,
-                             # Set option only if it is not blank.
+          # Set option only if it is not blank.
           iss:               ENV['JWT_ISSUER'].to_s.squish.presence,
           verify_iss:        ENV['JWT_ISSUER'].present?,
           verify_iat:        true,
           verify_jti:        true,
-                             # Support comma-separated JWT_AUDIENCE variable.
-                             # We are rejecting blank values from the list here.
-          aud:               ENV['JWT_AUDIENCE'].to_s.split(',').map(&:squish).reject(&:blank?).presence,
+          # Support comma-separated JWT_AUDIENCE variable.
+          # We are rejecting blank values from the list here.
+          # rubocop:disable Metrics/LineLength
+          aud: ENV['JWT_AUDIENCE'].to_s.split(',').map(&:squish).reject(&:blank?).presence,
           verify_aud:        ENV['JWT_AUDIENCE'].present?,
           sub:               'session',
           verify_sub:        true,
-          algorithms:        [ENV.fetch('JWT_ALGORITHM')],
-          leeway:            ENV['JWT_DEFAULT_LEEWAY'].to_s.squish.yield_self { |n| n.to_i if n.present? },
-          iat_leeway:        ENV['JWT_ISSUED_AT_LEEWAY'].to_s.squish.yield_self { |n| n.to_i if n.present? },
-          exp_leeway:        ENV['JWT_EXPIRATION_LEEWAY'].to_s.squish.yield_self { |n| n.to_i if n.present? },
-          nbf_leeway:        ENV['JWT_NOT_BEFORE_LEEWAY'].to_s.squish.yield_self { |n| n.to_i if n.present? }
-        }.compact
+          leeway: ENV['JWT_DEFAULT_LEEWAY'].to_s.squish.yield_self { |n| n.to_i if n.present? },
+          iat_leeway: ENV['JWT_ISSUED_AT_LEEWAY'].to_s.squish.yield_self { |n| n.to_i if n.present? },
+          exp_leeway: ENV['JWT_EXPIRATION_LEEWAY'].to_s.squish.yield_self { |n| n.to_i if n.present? },
+          nbf_leeway: ENV['JWT_NOT_BEFORE_LEEWAY'].to_s.squish.yield_self { |n| n.to_i if n.present? },
+          # rubocop:enable Metrics/LineLength
+          algorithms:        [ENV.fetch('JWT_ALGORITHM')] }.compact
       end
+      # rubocop:enable Metrics/AbcSize
     end
   end
 end

@@ -18,7 +18,8 @@ module APIv1
       def headers
         { 'Access-Control-Allow-Origin'      => ENV.fetch('API_CORS_ORIGINS'),
           'Access-Control-Allow-Methods'     => 'GET, POST, PUT, PATCH, DELETE',
-          'Access-Control-Allow-Headers'     => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+          'Access-Control-Allow-Headers'     => 'Origin, X-Requested-With, Content-Type, ' \
+                                                'Accept, Authorization',
           'Access-Control-Allow-Credentials' => ENV['API_CORS_ALLOW_CREDENTIALS'].present?.to_s }
       end
     end
@@ -30,13 +31,15 @@ module APIv1
           [200, APIv1::CORS.headers, []]
         else
           response = @app.call(env)
+          # rubocop:disable Style/CaseEquality
           headers  = Array === response ? response[1] : response.headers
+          # rubocop:enable Style/CaseEquality
           APIv1::CORS.call(headers)
           response
         end
       end
 
-    private
+      private
 
       def request
         @request ||= Grape::Request.new(env)

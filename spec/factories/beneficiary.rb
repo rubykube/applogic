@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :beneficiary do
-    uid "ID12345"
+    uid 'ID12345'
     full_name { Faker::GameOfThrones.character }
     address { Faker::Address.full_address }
     country { Faker::Address.country }

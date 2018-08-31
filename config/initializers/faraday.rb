@@ -17,34 +17,29 @@ module Faraday
 
   class Response
     def assert_success!
-      self.tap do |r|
+      tap do |r|
         Rails.logger.debug { describe } unless r.success?
       end
     end
 
+    # rubocop:disable Metrics/AbcSize
     def describe
       ["-- HTTP #{status} #{reason_phrase} --",
-       '',
-       '-- Request URL --',
+       '', '-- Request URL --',
        env.url.to_s,
-       '',
-       '-- Request Method --',
+       '', '-- Request Method --',
        env.method.to_s.upcase,
-       '',
-       '-- Request headers --',
+       '', '-- Request headers --',
        env.request_headers.to_json,
-       '',
-       '-- Request body --',
+       '', '-- Request body --',
        env.request_body,
-       '',
-       '-- Response headers --',
+       '', '-- Response headers --',
        env.response_headers.to_json,
-       '',
-       '-- Response body --',
+       '', '-- Response body --',
        env.body,
-       ''
-     ].join("\n")
+       ''].join("\n")
     end
+    # rubocop:enable Metrics/AbcSize
 
     def server_error?
       status.in?(500...600)
