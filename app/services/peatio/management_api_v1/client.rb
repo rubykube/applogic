@@ -17,6 +17,14 @@ module Peatio
                 end
         request(:post, 'withdraws/new', jwt, jwt: true)
       end
+
+      def
+        create_deposit(request_params = {})
+        self.action = :write_deposits
+        jwt = payload(request_params.slice(:uid, :currency, :amount))
+                  .yield_self { |payload| generate_jwt(payload) }
+        request(:post, 'deposits/new', jwt, jwt: true)
+      end
     end
   end
 end
