@@ -23,8 +23,8 @@ AppLogic is the component for implementitng custom business processes which shou
 
 ## Features
 
-* [Multisignature withdrawal request using Management API](#multisignature-withdrawa-request-using-management-api)
-* [Custom Event API listeners](docs/using_event_api.md)
+* [Multisignature withdrawal request using Management API](#multisignature-withdrawal-request-using-management-api)
+* [Custom Event API listeners](doc/using_event_api.md)
 
 ### Multisignature withdrawal request using Management API
 
