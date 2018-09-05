@@ -35,8 +35,10 @@ Among the main AppLogic features there are:
 
 ### Multisignature withdrawal request using Management API
 
-![scheme](public/multi_signature_withdrawal_request.png)
+![scheme](doc/assets/multi_signature_withdrawal_request.png)
 
 ### Custom Event API listeners
 
-Detailed documentation can be found [here](doc/using_event_api.md).
+![scheme](doc/assets/event_api_usage_example.png)
+
+Detailed documentation about implementation of Event API listeners could be found [here](doc/using_event_api.md).
