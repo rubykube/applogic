@@ -39,6 +39,6 @@ Among the main AppLogic features there are:
 
 ### Custom Event API listeners
 
-![scheme](doc/assets/event_api_usage_example.png)
+![scheme](doc/assets/event_api_listeners_flow.png)
 
 Detailed documentation about implementation of Event API listeners could be found [here](doc/using_event_api.md).
