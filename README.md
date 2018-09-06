@@ -1,4 +1,5 @@
 # AppLogic
+
 [![Build Status](https://travis-ci.org/rubykube/applogic.svg?branch=master)](https://travis-ci.org/rubykube/applogic)
 
 AppLogic is the component for implementing custom business processes which is currently being separated from core Peatio and Barong functionality. It is also designed for extending the system's functionality, for example adding a Paygate or a custom AML provider and is used by frontend application as well.
@@ -41,4 +42,4 @@ Among the main AppLogic features there are:
 
 ![scheme](doc/assets/event_api_listeners_flow.png)
 
-Detailed documentation about implementation of Event API listeners could be found [here](doc/using_event_api.md).
+Detailed documentation about implementation of Event API listeners could be found [here](doc/examples/using_event_api.md).
