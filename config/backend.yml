@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+
+  rabbitmq:
+    image: rabbitmq:3.7.6-management
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+
+volumes:
+  db_data:
+  rabbitmq_data:
