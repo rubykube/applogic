@@ -19,15 +19,11 @@ module Peatio
           raise ArgumentError, "Request method is not supported: #{request_method.inspect}."
         end
 
-        begin
-          http_client
-              .public_send(request_method, build_path(request_path))
-              .tap { |response| raise Peatio::MemberAPIv2::Exception, response unless response.success? }
-              .assert_success!
-              .body
-        rescue Faraday::Error
-          raise ManagementAPIv1::Exception
-        end
+        http_client
+          .public_send(request_method, build_path(request_path))
+          .tap { |response| raise Peatio::MemberAPIv2::Exception, response unless response.success? }
+          .assert_success!
+          .body
       end
 
       def http_client
