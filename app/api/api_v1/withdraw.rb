@@ -33,6 +33,9 @@ module APIv1
         otp_code: params[:otp],
         rid:      params[:rid]
       )
+    rescue StandardError => e
+      Rails.logger.error { "#{e} #{e.backtrace.join("\n")}" }
+      raise e
     end
   end
 end
