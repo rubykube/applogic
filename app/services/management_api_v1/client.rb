@@ -37,6 +37,7 @@ module ManagementAPIv1
 
     def http_client
       Faraday.new(url: @root_api_url) do |conn|
+        conn.response :logger
         conn.request :json
         conn.response :json
         conn.adapter Faraday.default_adapter
