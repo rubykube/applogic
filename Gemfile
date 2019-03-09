@@ -11,7 +11,7 @@ gem 'grape-entity',                     '~> 0.7.1'
 gem 'grape_logging',                    '~> 1.8'
 gem 'jwt-multisig',                     '~> 1.0'
 gem 'memoist',                          '~> 0.16'
-gem 'mini_racer',                       '~> 0.1', require: false
+gem 'mini_racer',                       '~> 0.2', require: false
 gem 'mysql2',                           '>= 0.3.18', '< 0.5'
 gem 'puma',                             '~> 3.7'
 gem 'rails',                            '~> 5.2'
