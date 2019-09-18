@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/rubykube/applogic.svg?branch=master)](https://travis-ci.org/rubykube/applogic)
 
+**Please note, that this project is deprecated and moved to https://github.com/openware/opendax**
 AppLogic is the component for implementing custom business processes which is currently being separated from core Peatio and Barong functionality. It is also designed for extending the system's functionality, for example adding a Paygate or a custom AML provider and is used by frontend application as well.
 
 ## Getting Started
